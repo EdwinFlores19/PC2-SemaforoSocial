@@ -1,0 +1,91 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "🚦 EnRuta PC2-PFDC3" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: 🚦
+        - generic [ref=e9]:
+          - text: EnRuta
+          - generic [ref=e10]: PC2-PFDC3
+      - button "Abrir menú" [ref=e12]:
+        - img [ref=e13]
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e20]: 🚀 TECNOLOGÍA CON IMPACTO SOCIAL REAL
+        - heading "Plataforma EnRuta" [level=1] [ref=e21]
+        - paragraph [ref=e22]:
+          - text: Un sistema inteligente on-demand de micro-empleo y fintech enfocado en la
+          - strong [ref=e23]: formalización, capacitación y salud financiera
+          - text: de trabajadores independientes en Perú, con control estricto contra el trabajo infantil.
+        - generic [ref=e24]:
+          - button "💼 ¡Chambea Ahora!" [ref=e25]
+          - button "📍 Buscar Servicios" [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic:
+            - img
+          - generic [ref=e30]: 350+
+          - generic [ref=e31]: Trabajadores Activos
+        - generic [ref=e32]:
+          - generic:
+            - img
+          - generic [ref=e34]: 0%
+          - generic [ref=e35]: Trabajo Infantil
+        - generic [ref=e36]:
+          - generic:
+            - img
+          - generic [ref=e38]: 4,200+
+          - generic [ref=e39]: Cursos Completados
+        - generic [ref=e40]:
+          - generic:
+            - img
+          - generic [ref=e42]: S/. 12.5K
+          - generic [ref=e43]: Procesado POS
+      - generic [ref=e44]:
+        - generic [ref=e45] [cursor=pointer]:
+          - generic [ref=e46]:
+            - img [ref=e48]
+            - heading "Soy Trabajador Vial" [level=2] [ref=e50]
+            - paragraph [ref=e51]: Accede a tu panel 'Chambea Ahora!', sube tu semáforo de formalización con cursos y obtén micro-créditos.
+          - button "Ir a Chambea Ahora →" [ref=e52]
+        - generic [ref=e53] [cursor=pointer]:
+          - generic [ref=e54]:
+            - img [ref=e56]
+            - heading "Necesito Asistencia" [level=2] [ref=e59]
+            - paragraph [ref=e60]: Encuentra asistentes viales de confianza geolocalizados en semáforos cerca de ti y califícalos con estrellas.
+          - button "Buscar Trabajadores →" [ref=e61]
+        - generic [ref=e62] [cursor=pointer]:
+          - generic [ref=e63]:
+            - img [ref=e65]
+            - heading "POS Virtual & Fintech" [level=2] [ref=e67]
+            - paragraph [ref=e68]: Gestiona cobros sin contacto mediante NFC Tap-to-Pay y códigos QR Yape/Plin con split automático de comisiones.
+          - button "Abrir POS & Billetera →" [ref=e69]
+  - contentinfo [ref=e70]:
+    - generic [ref=e71]:
+      - paragraph [ref=e72]: 🚦 EnRuta — Transformación Social Vial con IA & Fintech
+      - paragraph [ref=e73]: Plataforma digital para la formalización laboral y bancarización de asistentes independientes en Perú. Respaldado y fiscalizado bajo las normativas de MINTRA y MIMP contra la erradicación del trabajo infantil.
+      - generic [ref=e74]:
+        - generic [ref=e75]: © 2026 — PC2 Boilerplate Full-Stack. Ecosistema SRE.
+        - generic [ref=e76]: Versión de Producto 1.0 (DS Maestro)
+  - generic [ref=e77]:
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - generic:
+          - img
+        - generic [ref=e90]:
+          - heading "Asistente de Servicio Express" [level=3] [ref=e91]
+          - generic [ref=e93]: Semi 🚦 Online
+      - generic [ref=e94]: cliente
+    - generic [ref=e97]:
+      - generic:
+        - img
+      - generic [ref=e108]: ¡Hola! Soy Semi 🚦 ¿Buscas un lavado express cerca de ti o deseas saber cómo calificar a nuestros asistentes viales?
+    - generic [ref=e109]:
+      - button "📍 Buscar lavadores cerca" [ref=e110]
+      - button "⭐ ¿Cómo califico el servicio?" [ref=e111]
+      - button "❓ ¿Cómo funciona el pago digital?" [ref=e112]
+      - button "🚗 Tarifas de Car Wash" [ref=e113]
+    - generic [ref=e115]:
+      - textbox "Escribe tu mensaje aquí..." [ref=e116]
+      - button "Enviar" [disabled] [ref=e117]

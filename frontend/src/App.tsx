@@ -8,51 +8,24 @@ import FintechView from './components/FintechView';
 import OnboardingView from './components/OnboardingView';
 import { MetricCard, RoleCard, Button, Card, Badge } from './components/SemaforoComponents.js';
 import SemiChatbot, { ChatbotRole } from './components/SemiChatbot';
-
-// Real SVG icons for high-contrast metrics
-const UsersIcon = (
-  <svg className="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-  </svg>
-);
-
-const ShieldIcon = (
-  <svg className="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-  </svg>
-);
-
-const CapIcon = (
-  <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.083 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-  </svg>
-);
-
-const POSIcon = (
-  <svg className="h-6 w-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-  </svg>
-);
-
-// Real SVG icons for access roles
-const WorkerRoleIcon = (
-  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11M5 11c0-3.517 1.009-6.799 2.753-9.571m3.44 2.04l-.054.09A13.916 13.916 0 005 11zm11 10c0-3.517-1.009-6.799-2.753-9.571m-3.44-2.04l.054-.09A13.916 13.916 0 0013 11m4 0c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054.09A13.916 13.916 0 0017 11z" />
-  </svg>
-);
-
-const CustomerRoleIcon = (
-  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-  </svg>
-);
-
-const EnterpriseRoleIcon = (
-  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-  </svg>
-);
+import {
+  UsersIcon,
+  ShieldIcon,
+  ShieldCheckIcon,
+  GraduationCapIcon,
+  CreditCardIcon,
+  WorkerIcon,
+  MapPinIcon,
+  BuildingIcon,
+  HomeIcon,
+  ChatIcon,
+  SearchIcon,
+  SparklesIcon,
+  BriefcaseIcon,
+  ChartBarIcon,
+  MenuIcon,
+  XIcon,
+} from './components/SemaforoIcons.js';
 
 export default function App(): React.JSX.Element {
   const navigate = useNavigate();
@@ -114,25 +87,25 @@ export default function App(): React.JSX.Element {
             {/* Center navigation with EXACT gap-6 (24px spacing between items) */}
             <nav className="hidden xl:flex items-center gap-6">
               <Link to="/dashboard" className={getLinkClass('/dashboard', 'border-[#3B82F6]/40 text-[#3B82F6]')}>
-                🏠 Dashboard
+                <HomeIcon size="sm" className="text-[#3B82F6]" /> Dashboard
               </Link>
               <Link to="/candidate" className={getLinkClass('/candidate', 'border-emerald-500/40 text-emerald-400')}>
-                🧹 Coach CV
+                <ChatIcon size="sm" className="text-emerald-400" /> Coach CV
               </Link>
               <Link to="/employer" className={getLinkClass('/employer', 'border-indigo-500/40 text-indigo-400')}>
-                💼 Buscar RAG
+                <SearchIcon size="sm" className="text-indigo-400" /> Buscar RAG
               </Link>
               <Link to="/chambea-ahora" className={getLinkClass('/chambea-ahora', 'border-[#48BB78]/40 text-[#48BB78] border-l border-[#2D3748] pl-6')}>
-                💚 Chambea Ahora!
+                <SparklesIcon size="sm" className="text-[#48BB78]" /> Chambea Ahora!
               </Link>
               <Link to="/buscar" className={getLinkClass('/buscar', 'border-[#F6AD55]/40 text-[#F6AD55]')}>
-                📍 Mapa Vial
+                <MapPinIcon size="sm" className="text-[#F6AD55]" /> Mapa Vial
               </Link>
               <Link to="/payments" className={getLinkClass('/payments', 'border-cyan-500/40 text-cyan-400')}>
-                📶 POS & Pagos
+                <CreditCardIcon size="sm" className="text-cyan-400" /> POS & Pagos
               </Link>
               <Link to="/onboarding" className={getLinkClass('/onboarding', 'border-purple-500/40 text-purple-400')}>
-                🛡️ KYC Registro
+                <ShieldIcon size="sm" className="text-purple-400" /> KYC Registro
               </Link>
             </nav>
           </div>
@@ -161,13 +134,7 @@ export default function App(): React.JSX.Element {
               className="xl:hidden flex items-center justify-center p-2 rounded-xl text-[#A0AEC0] hover:text-[#F7FAFC] hover:bg-[#171923] focus:outline-none min-h-[44px] min-w-[44px]"
               aria-label="Abrir menú"
             >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {mobileMenuOpen ? <XIcon size="lg" /> : <MenuIcon size="lg" />}
             </button>
           </div>
         </div>
@@ -176,25 +143,25 @@ export default function App(): React.JSX.Element {
         {mobileMenuOpen && (
           <div className="xl:hidden bg-[#0F1117] border-t border-[#2D3748] px-6 py-5 space-y-2.5 flex flex-col shadow-2xl animate-fadeIn">
             <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/dashboard', 'border-[#3B82F6]/40 text-[#3B82F6]')}>
-              🏠 Dashboard
+              <HomeIcon size="sm" className="text-[#3B82F6]" /> Dashboard
             </Link>
             <Link to="/candidate" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/candidate', 'border-emerald-500/40 text-emerald-400')}>
-              🧹 Coach CV
+              <ChatIcon size="sm" className="text-emerald-400" /> Coach CV
             </Link>
             <Link to="/employer" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/employer', 'border-indigo-500/40 text-indigo-400')}>
-              💼 Buscar RAG
+              <SearchIcon size="sm" className="text-indigo-400" /> Buscar RAG
             </Link>
             <Link to="/chambea-ahora" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/chambea-ahora', 'border-[#48BB78]/40 text-[#48BB78]')}>
-              💚 Chambea Ahora!
+              <SparklesIcon size="sm" className="text-[#48BB78]" /> Chambea Ahora!
             </Link>
             <Link to="/buscar" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/buscar', 'border-[#F6AD55]/40 text-[#F6AD55]')}>
-              📍 Mapa Vial
+              <MapPinIcon size="sm" className="text-[#F6AD55]" /> Mapa Vial
             </Link>
             <Link to="/payments" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/payments', 'border-cyan-500/40 text-cyan-400')}>
-              📶 POS & Pagos
+              <CreditCardIcon size="sm" className="text-cyan-400" /> POS & Pagos
             </Link>
             <Link to="/onboarding" onClick={() => setMobileMenuOpen(false)} className={getLinkClass('/onboarding', 'border-purple-500/40 text-purple-400')}>
-              🛡️ KYC Registro
+              <ShieldIcon size="sm" className="text-purple-400" /> KYC Registro
             </Link>
             <div className="flex flex-col gap-2 pt-3 border-t border-[#2D3748]/50">
               <Button
@@ -268,7 +235,7 @@ function HomeView(): React.JSX.Element {
         
         {/* Real Badge using DS standards */}
         <div className="inline-block transform hover:scale-105 transition-all">
-          <Badge status="VERDE" text="🚀 TECNOLOGÍA CON IMPACTO SOCIAL REAL" />
+          <Badge status="VERDE" text="TECNOLOGÍA CON IMPACTO SOCIAL REAL" />
         </div>
 
         <h1 className="text-[48px] font-extrabold text-[#F7FAFC] tracking-tight leading-none">
@@ -285,14 +252,14 @@ function HomeView(): React.JSX.Element {
             onClick={() => navigate('/chambea-ahora')}
             className="font-bold min-h-[44px]"
           >
-            💼 ¡Chambea Ahora!
+            <BriefcaseIcon size="sm" /> ¡Chambea Ahora!
           </Button>
           <Button
             variant="secondary"
             onClick={() => navigate('/buscar')}
             className="min-h-[44px]"
           >
-            📍 Buscar Servicios
+            <MapPinIcon size="sm" /> Buscar Servicios
           </Button>
         </div>
       </div>
@@ -300,23 +267,23 @@ function HomeView(): React.JSX.Element {
       {/* 3. MANDATORY MetricCard GRID (No HTML Table, Real SVG Vector Icons) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         <MetricCard
-          icon={UsersIcon}
+          icon={<UsersIcon size="lg" className="text-blue-400" />}
           value="350+"
           label="Trabajadores Activos"
         />
         <MetricCard
-          icon={ShieldIcon}
+          icon={<ShieldCheckIcon size="lg" className="text-emerald-400" />}
           value="0%"
           label="Trabajo Infantil"
           className="border-emerald-500/10 shadow-[0_0_10px_rgba(72,187,120,0.05)]"
         />
         <MetricCard
-          icon={CapIcon}
+          icon={<GraduationCapIcon size="lg" className="text-purple-400" />}
           value="4,200+"
           label="Cursos Completados"
         />
         <MetricCard
-          icon={POSIcon}
+          icon={<CreditCardIcon size="lg" className="text-cyan-400" />}
           value="S/. 12.5K"
           label="Procesado POS"
         />
@@ -325,25 +292,28 @@ function HomeView(): React.JSX.Element {
       {/* 4. MANDATORY RoleCard GRID with Real SVG Vector Icons and CTA Arrow Ghosts */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <RoleCard
-          icon={WorkerRoleIcon}
+          icon={<WorkerIcon size="lg" />}
           title="Soy Trabajador Vial"
           description="Accede a tu panel 'Chambea Ahora!', sube tu semáforo de formalización con cursos y obtén micro-créditos."
           onClick={() => navigate('/chambea-ahora')}
           ctaText="Ir a Chambea Ahora"
+          accentColor="#48BB78"
         />
         <RoleCard
-          icon={CustomerRoleIcon}
+          icon={<MapPinIcon size="lg" />}
           title="Necesito Asistencia"
           description="Encuentra asistentes viales de confianza geolocalizados en semáforos cerca de ti y califícalos con estrellas."
           onClick={() => navigate('/buscar')}
           ctaText="Buscar Trabajadores"
+          accentColor="#F6AD55"
         />
         <RoleCard
-          icon={EnterpriseRoleIcon}
+          icon={<BuildingIcon size="lg" />}
           title="POS Virtual & Fintech"
           description="Gestiona cobros sin contacto mediante NFC Tap-to-Pay y códigos QR Yape/Plin con split automático de comisiones."
           onClick={() => navigate('/payments')}
           ctaText="Abrir POS & Billetera"
+          accentColor="#3B82F6"
         />
       </div>
     </div>
@@ -394,7 +364,7 @@ function DashboardPlaceholder(): React.JSX.Element {
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="border-b border-[#2D3748] pb-6">
         <span className="text-[#3B82F6] uppercase text-[13px] tracking-[0.05em] font-mono font-bold block mb-1">
-          📊 MÉTRICAS GENERALES DE PLATAFORMA
+          <ChartBarIcon size="sm" className="inline align-text-bottom mr-1.5 text-[#3B82F6]" /> MÉTRICAS GENERALES DE PLATAFORMA
         </span>
         <h1 className="text-[36px] font-bold text-[#F7FAFC] tracking-tight">Panel de Control (Dashboard)</h1>
         <p className="text-[16px] text-[#A0AEC0] mt-1">Inspección de operatividad y estadísticas fiscales en tiempo real.</p>
@@ -403,11 +373,15 @@ function DashboardPlaceholder(): React.JSX.Element {
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Card className="flex flex-col justify-between">
           <span className="text-[13px] font-mono font-bold text-[#A0AEC0] uppercase tracking-[0.05em]">Estatus del Backend</span>
-          <span className="mt-2 text-[24px] font-bold text-[#48BB78]">🟢 Activo</span>
+          <span className="mt-2 text-[24px] font-bold text-[#48BB78] flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#48BB78]" /> Activo
+          </span>
         </Card>
         <Card className="flex flex-col justify-between">
           <span className="text-[13px] font-mono font-bold text-[#A0AEC0] uppercase tracking-[0.05em]">Conexión Supabase</span>
-          <span className="mt-2 text-[24px] font-bold text-[#3B82F6]">🟢 Conectado</span>
+          <span className="mt-2 text-[24px] font-bold text-[#3B82F6] flex items-center gap-2">
+            <span className="h-3 w-3 rounded-full bg-[#3B82F6]" /> Conectado
+          </span>
         </Card>
         <Card className="flex flex-col justify-between">
           <span className="text-[13px] font-mono font-bold text-[#A0AEC0] uppercase tracking-[0.05em]">Monitoreo SRE</span>
@@ -417,7 +391,7 @@ function DashboardPlaceholder(): React.JSX.Element {
 
       <Card className="space-y-4">
         <h3 className="text-[20px] font-bold text-[#F7FAFC] border-b border-[#2D3748] pb-3">
-          📋 Datos de Control y Fiscalización
+          <ShieldIcon size="md" className="inline align-text-bottom mr-1.5 text-[#3B82F6]" /> Datos de Control y Fiscalización
         </h3>
         <p className="text-[16px] text-[#A0AEC0] leading-[1.6]">
           Este módulo está diseñado para la fiscalización del cumplimiento de regulaciones viales de superación de trabajadores independientes en Perú.

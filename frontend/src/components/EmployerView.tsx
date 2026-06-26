@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import apiClient from '../api/axios';
 import { Card, Button } from './SemaforoComponents.js';
+import { SearchIcon, BotIcon, ExclamationIcon, DocumentTextIcon } from './SemaforoIcons.js';
 
 interface Message {
   role: 'user' | 'model';
@@ -72,8 +73,8 @@ export default function EmployerView(): React.JSX.Element {
     <div className="space-y-8 max-w-7xl mx-auto px-4">
       {/* HEADER SECTION - Role Empresa Accent Orange (#DD6B20) */}
       <div className="bg-gradient-to-r from-[#171923] via-[#1A202C] to-[#0F1117] border border-[#2D3748] rounded-[12px] p-6 md:p-8 text-white shadow-xl">
-        <span className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-block mb-3">
-          🔎 BÚSQUEDA DE SELECCIÓN CON INTELIGENCIA ARTIFICIAL (RAG) — EMPRESAS
+        <span className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-flex items-center gap-1.5 mb-3">
+          <SearchIcon size="sm" /> BÚSQUEDA DE SELECCIÓN CON INTELIGENCIA ARTIFICIAL (RAG) — EMPRESAS
         </span>
         <h1 className="text-3xl md:text-4xl font-black tracking-tight">Panel de Reclutamiento RAG & Asistente IA</h1>
         <p className="mt-2 text-[#A0AEC0] max-w-2xl text-sm md:text-base leading-relaxed">
@@ -88,7 +89,7 @@ export default function EmployerView(): React.JSX.Element {
           <div className="space-y-6">
             <div className="border-b border-[#2D3748] pb-4">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                🔍 Búsqueda Semántica RAG
+                <SearchIcon size="md" className="text-[#DD6B20]" /> Búsqueda Semántica RAG
               </h2>
               <p className="text-xs text-[#A0AEC0] mt-1.5 leading-relaxed">
                 Cómo optimizamos tu reclutamiento de personal con Inteligencia Semántica.
@@ -135,7 +136,9 @@ export default function EmployerView(): React.JSX.Element {
           </div>
 
           <div className="bg-[#0F1117] border border-[#2D3748] rounded-xl p-5">
-            <h4 className="text-xs font-bold text-[#DD6B20] uppercase mb-2 font-mono tracking-wider">💡 Tip de Selección:</h4>
+            <h4 className="text-xs font-bold text-[#DD6B20] uppercase mb-2 font-mono tracking-wider inline-flex items-center gap-1">
+              <DocumentTextIcon size="xs" /> Tip de Selección:
+            </h4>
             <p className="text-xs text-slate-300 leading-relaxed">
               Los trabajadores de la vía pública tienen habilidades de venta y resiliencia valiosas. Nuestro bot te ayudará a traducir sus antiguas labores en competencias operativas de caja y almacén.
             </p>
@@ -148,7 +151,7 @@ export default function EmployerView(): React.JSX.Element {
             <div className="border-b border-[#2D3748] pb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  🤖 Ramiro, tu Asesor de Selección
+                  <BotIcon size="md" className="text-[#DD6B20]" /> Ramiro, tu Asesor de Selección
                 </h2>
                 <p className="text-xs text-[#A0AEC0] mt-1">
                   Pregunta por perfiles, ubicación, habilidades o rubros. Buscaremos candidatos reales para ti.
@@ -204,7 +207,7 @@ export default function EmployerView(): React.JSX.Element {
 
               {chatError && (
                 <div className="p-3 bg-[#E53E3E]/10 text-[#E53E3E] text-xs rounded-xl border border-[#E53E3E]/20 text-center font-medium font-mono">
-                  ⚠️ {chatError}
+                  <ExclamationIcon size="sm" className="inline" /> {chatError}
                 </div>
               )}
               <div ref={chatEndRef} />

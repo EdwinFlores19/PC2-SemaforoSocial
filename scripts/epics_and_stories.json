@@ -226,6 +226,76 @@
           "status": "Done"
         }
       ]
+    },
+    {
+      "id": "E-5",
+      "title": "ÉPICA 5: Resiliencia de Campo, Soporte Offline y Alertas de Seguridad SRE (SOS)",
+      "description": "Desarrollo del soporte fuera de línea (PWA App Shell Caching), cola de sincronización transaccional en backend y alertas de pánico SOS discretas en tiempo real vía SSE para la gobernanza municipal B2G.",
+      "acceptance_criteria": [
+        "El Service Worker debe cachear el app shell del frontend para carga offline instantánea.",
+        "Se debe reportar y procesar la alerta SOS de forma silenciosa guardándola en Postgres mediante Prisma.",
+        "El Dashboard de Gobernanza B2G debe recibir alertas SOS en tiempo real y parpadear en rojo neón."
+      ],
+      "story_points": 26,
+      "priority": "Highest",
+      "labels": ["sre", "seguridad", "offline", "b2g"],
+      "stories": [
+        {
+          "title": "US-XX1: Offline Mode (PWA App Shell Caching)",
+          "description": "COMO Trabajador de calle con cobertura de internet inestable\nQUIERO que el app shell de la aplicación cargue instantáneamente incluso en modo avión\nPARA consultar mis capacitaciones y metas sin conexión.",
+          "acceptance_criteria": [
+            "DADO QUE el usuario no cuenta con conexión a internet, CUANDO abre la aplicación, ENTONCES el Service Worker de la PWA sirve el app shell cacheado de forma exitosa."
+          ],
+          "story_points": 5,
+          "priority": "High",
+          "labels": ["frontend", "pwa", "offline"],
+          "status": "Done"
+        },
+        {
+          "title": "US-XX2: SOS Silencioso (Pulsación Prolongada en Semáforo)",
+          "description": "COMO Trabajador expuesto a asaltos o peligros en avenidas de alto tráfico\nQUIERO disparar una alerta SOS silenciosa con una pulsación de 3 segundos sobre el Semáforo Personal\nPARA reportar mi emergencia a serenazgo de forma secreta.",
+          "acceptance_criteria": [
+            "DADO QUE el trabajador está en peligro, CUANDO realiza un long press de 3 segundos en el semáforo de metas, ENTONCES se dispara una petición silenciosa POST /api/v1/services/sos y se muestra una confirmación sutil por micro-brillo de neón rojo."
+          ],
+          "story_points": 5,
+          "priority": "Highest",
+          "labels": ["frontend", "seguridad"],
+          "status": "Done"
+        },
+        {
+          "title": "US-YY1: SOS Endpoint (Controlador y Servidor SOS)",
+          "description": "COMO Servidor Backend SRE\nQUIERO exponer un endpoint seguro para registrar alertas de pánico SOS viales\nPARA persistirlas transaccionalmente en Postgres y notificarlas por SSE a la municipalidad.",
+          "acceptance_criteria": [
+            "DADO QUE el backend recibe una petición POST en /api/v1/services/sos, CUANDO valida el token del trabajador, ENTONCES inserta el registro del SOS en la base de datos de Supabase y emite la alerta vía SSE."
+          ],
+          "story_points": 5,
+          "priority": "Highest",
+          "labels": ["backend", "seguridad", "base-de-datos"],
+          "status": "Done"
+        },
+        {
+          "title": "US-YY2: Sincronización Offline Transaccional",
+          "description": "COMO Trabajador que operó sin conexión a internet\nQUIERO enviar las transacciones encoladas de forma diferida al recuperar conexión\nPARA sincronizar mi saldo y mi historial operativo de forma segura.",
+          "acceptance_criteria": [
+            "DADO QUE se recupera la conexión de red, CUANDO el cliente envía el lote de transacciones pendientes a /api/v1/sync, ENTONCES el backend las procesa de manera transaccional en un bloque prisma.$transaction."
+          ],
+          "story_points": 8,
+          "priority": "High",
+          "labels": ["backend", "offline", "base-de-datos"],
+          "status": "Done"
+        },
+        {
+          "title": "US-ZZ1: Alerta SOS en Dashboard Municipal B2G",
+          "description": "COMO Inspector o Serenazgo Distrital\nQUIERO que mi panel de gobernanza alerte con parpadeo rojo y muestre las coordenadas de peligro\nPARA despachar una unidad de auxilio al trabajador en peligro.",
+          "acceptance_criteria": [
+            "DADO QUE ingresa una alerta SOS al sistema, CUANDO el Dashboard B2G la detecta vía SSE, ENTONCES la pantalla parpadea visualmente en rojo neón y dibuja en el mapa la ubicación GPS exacta del trabajador afectado."
+          ],
+          "story_points": 3,
+          "priority": "Highest",
+          "labels": ["frontend", "admin", "b2g"],
+          "status": "Done"
+        }
+      ]
     }
   ]
 }

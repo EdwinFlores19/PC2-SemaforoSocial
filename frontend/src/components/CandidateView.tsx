@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import apiClient from '../api/axios';
 import { Card, Button } from './SemaforoComponents.js';
+import { DocumentTextIcon, ChatIcon, ExclamationIcon, SendIcon, SparklesIcon, BotIcon } from './SemaforoIcons.js';
 
 interface Message {
   role: 'user' | 'model';
@@ -115,8 +116,8 @@ export default function CandidateView(): React.JSX.Element {
     <div className="space-y-8 max-w-7xl mx-auto px-4">
       {/* HEADER SECTION */}
       <div className="bg-gradient-to-r from-[#171923] via-[#1A202C] to-[#0F1117] border border-[#2D3748] rounded-[12px] p-6 md:p-8 text-white shadow-xl">
-        <span className="bg-[#48BB78]/10 text-[#48BB78] border border-[#48BB78]/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-block mb-3">
-          🎓 TRADUCCIÓN DE HABILIDADES & TUTORÍA FINANCIERA
+        <span className="bg-[#48BB78]/10 text-[#48BB78] border border-[#48BB78]/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-flex items-center gap-1.5 mb-3">
+          <DocumentTextIcon size="sm" /> TRADUCCIÓN DE HABILIDADES & TUTORÍA FINANCIERA
         </span>
         <h1 className="text-3xl md:text-4xl font-black tracking-tight">Portal del Trabajador & Coach Virtual</h1>
         <p className="mt-2 text-[#A0AEC0] max-w-2xl text-sm md:text-base leading-relaxed">
@@ -131,7 +132,7 @@ export default function CandidateView(): React.JSX.Element {
           <div className="space-y-6">
             <div className="border-b border-[#2D3748] pb-4">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                📝 Motor NLP: Estandariza tu CV Informal
+                <DocumentTextIcon size="md" className="text-[#3B82F6]" /> Motor NLP: Estandariza tu CV Informal
               </h2>
               <p className="text-xs text-[#A0AEC0] mt-1.5 leading-relaxed">
                 Escribe detalladamente tus labores pasadas (ej. venta ambulante, cobrador, lavado de autos) y la IA estructurará tus competencias profesionales.
@@ -152,13 +153,13 @@ export default function CandidateView(): React.JSX.Element {
                 disabled={parsing || !rawText.trim()}
                 className="w-full min-h-[44px]"
               >
-                {parsing ? 'Procesando con IA...' : 'Estandarizar Mi Experiencia con IA ⚡'}
+                {parsing ? 'Procesando con IA...' : <><SparklesIcon size="sm" className="inline" /> Estandarizar Mi Experiencia con IA</>}
               </Button>
             </form>
 
             {parseError && (
               <div className="p-4 bg-[#E53E3E]/10 text-[#E53E3E] text-xs rounded-xl border border-[#E53E3E]/20 font-medium">
-                ⚠️ {parseError}
+                <ExclamationIcon size="sm" className="inline" /> {parseError}
               </div>
             )}
 
@@ -166,10 +167,10 @@ export default function CandidateView(): React.JSX.Element {
             {profile && (
               <div className="space-y-4 border border-[#48BB78]/20 bg-[#48BB78]/5 rounded-xl p-5 animate-fadeIn">
                 <div className="flex items-center justify-between">
-                  <span className="bg-[#48BB78]/10 text-[#48BB78] border border-[#48BB78]/20 text-xs px-2.5 py-1 rounded-full font-bold">
-                    ✨ Perfil Traducido por IA
+                  <span className="bg-[#48BB78]/10 text-[#48BB78] border border-[#48BB78]/20 text-xs px-2.5 py-1 rounded-full font-bold inline-flex items-center gap-1">
+                    <SparklesIcon size="xs" /> Perfil Traducido por IA
                   </span>
-                  <span className="text-xs text-[#A0AEC0] font-mono font-bold">📍 {profile.location}</span>
+                  <span className="text-xs text-[#A0AEC0] font-mono font-bold">{profile.location}</span>
                 </div>
 
                 <div>
@@ -228,7 +229,7 @@ export default function CandidateView(): React.JSX.Element {
             <div className="border-b border-[#2D3748] pb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                  💬 Habla con Fito, tu Coach
+                  <ChatIcon size="md" className="text-[#3B82F6]" /> Habla con Fito, tu Coach
                 </h2>
                 <p className="text-xs text-[#A0AEC0] mt-1">
                   Aprende finanzas sencillas, cómo cobrar y cómo armar tu presupuesto personal.
@@ -244,7 +245,9 @@ export default function CandidateView(): React.JSX.Element {
             <div className="flex-grow overflow-y-auto space-y-4 pr-1 my-4">
               {messages.length === 0 && (
                 <div className="text-center text-[#A0AEC0] my-12 space-y-2">
-                  <span className="text-3xl block">🐸</span>
+                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-[#1A202C] text-[#3B82F6]">
+                    <BotIcon size="lg" />
+                  </div>
                   <p className="text-sm font-bold">¡Hola! Soy Fito, tu asesor financiero.</p>
                   <p className="text-xs text-[#A0AEC0] max-w-xs mx-auto">Pregúntame cómo presupuestar tu dinero o cómo usar herramientas de cobro digital.</p>
                 </div>
@@ -283,7 +286,7 @@ export default function CandidateView(): React.JSX.Element {
 
               {chatError && (
                 <div className="p-3 bg-[#E53E3E]/10 text-[#E53E3E] text-xs rounded-xl border border-[#E53E3E]/20 text-center font-medium">
-                  ⚠️ {chatError}
+                  <ExclamationIcon size="sm" className="inline" /> {chatError}
                 </div>
               )}
               <div ref={chatEndRef} />
@@ -323,7 +326,7 @@ export default function CandidateView(): React.JSX.Element {
                   disabled={!inputMessage.trim() || sendingChat}
                   className="min-h-[44px] shrink-0"
                 >
-                  Enviar 🚀
+                  <SendIcon size="sm" /> Enviar
                 </Button>
               </div>
             </div>

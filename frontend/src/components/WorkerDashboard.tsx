@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../api/axios';
 import { Card, Button, Badge, SemaforoProgress } from './SemaforoComponents.js';
+import { SparklesIcon, RadarIcon, AcademicCapIcon, CurrencyDollarIcon, CheckIcon, XIcon, ExclamationIcon, ShieldIcon } from './SemaforoIcons.js';
 
 interface MetricDetail {
   id: string;

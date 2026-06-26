@@ -1,4 +1,5 @@
 import React from 'react';
+import { StarIcon, MapPinIcon } from './SemaforoIcons.js';
 
 // ==========================================
 // 1. Card Component
@@ -62,20 +63,20 @@ export const Badge: React.FC<BadgeProps> = ({ status, text, size = 'md' }) => {
   let textColor = 'text-[#E53E3E]';
   let bgColor = 'bg-[#E53E3E]/10';
   let borderClass = 'border-[#E53E3E]/20';
-  let label = '🔴 Pendiente / Riesgo';
+  let label = 'Pendiente / Riesgo';
 
   if (normStatus === 'AMARILLO' || normStatus === 'YELLOW') {
     dotColor = 'bg-[#F6AD55]';
     textColor = 'text-[#F6AD55]';
     bgColor = 'bg-[#F6AD55]/10';
     borderClass = 'border-[#F6AD55]/20';
-    label = '🟡 En Proceso';
+    label = 'En Proceso';
   } else if (normStatus === 'VERDE' || normStatus === 'GREEN') {
     dotColor = 'bg-[#48BB78]';
     textColor = 'text-[#48BB78]';
     bgColor = 'bg-[#48BB78]/10';
     borderClass = 'border-[#48BB78]/20';
-    label = '🟢 Verificado / Completo';
+    label = 'Verificado / Completo';
   }
 
   const displayText = text || label;
@@ -165,12 +166,13 @@ interface MetricCardProps {
   value: string;
   label: string;
   className?: string;
+  iconClassName?: string;
 }
 
-export const MetricCard: React.FC<MetricCardProps> = ({ icon, value, label, className = '' }) => {
+export const MetricCard: React.FC<MetricCardProps> = ({ icon, value, label, className = '', iconClassName = '' }) => {
   return (
     <Card className={`flex flex-col items-center justify-center text-center p-6 bg-[#171923] ${className}`}>
-      <div className="mb-2.5">{icon}</div>
+      <div className={`mb-3 inline-flex items-center justify-center ${iconClassName}`}>{icon}</div>
       <span className="text-[32px] font-bold text-[#F7FAFC] font-mono leading-none">{value}</span>
       <span className="text-[13px] font-semibold text-[#A0AEC0] uppercase tracking-[0.05em] font-mono mt-2.5 text-center">
         {label}
@@ -188,16 +190,20 @@ interface RoleCardProps {
   description: string;
   onClick: () => void;
   ctaText: string;
+  accentColor?: string;
 }
 
-export const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, onClick, ctaText }) => {
+export const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, onClick, ctaText, accentColor = '#3B82F6' }) => {
   return (
     <Card
       onClick={onClick}
       className="flex flex-col justify-between h-[280px] bg-[#171923] border border-[#2D3748] cursor-pointer hover:border-[#3B82F6] hover:-translate-y-1 hover:shadow-lg transition-all duration-150"
     >
       <div>
-        <div className="bg-[#1A202C] h-12 w-12 rounded-xl flex items-center justify-center text-2xl mb-4">
+        <div
+          className="h-12 w-12 rounded-xl flex items-center justify-center mb-4"
+          style={{ backgroundColor: `${accentColor}15`, color: accentColor }}
+        >
           {icon}
         </div>
         <h2 className="text-[24px] font-semibold text-[#F7FAFC] leading-[1.3] mb-2">
@@ -208,7 +214,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, on
         </p>
       </div>
       <Button variant="ghost" onClick={(e) => { e.stopPropagation(); onClick(); }} className="mt-4 shrink-0 self-start">
-        {ctaText} &rarr;
+        {ctaText} <span className="text-lg leading-none">&rarr;</span>
       </Button>
     </Card>
   );
@@ -241,11 +247,15 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ name, specialty, rating,
       <div className="flex-grow">
         <div className="flex justify-between items-start">
           <h4 className="font-bold text-[#F7FAFC] text-[16px] leading-tight">{name}</h4>
-          <span className="text-[#F6AD55] font-bold text-xs flex items-center gap-1">★ {rating}</span>
+          <span className="text-[#F6AD55] font-bold text-xs flex items-center gap-1">
+            <StarIcon size="sm" className="text-[#F6AD55]" /> {rating}
+          </span>
         </div>
         <p className="text-xs text-[#3B82F6] font-semibold mt-0.5">{specialty}</p>
         <div className="flex justify-between items-center mt-3">
-          <span className="text-[11px] text-[#A0AEC0] font-medium">📍 {distance}</span>
+          <span className="text-[11px] text-[#A0AEC0] font-medium flex items-center gap-1">
+            <MapPinIcon size="xs" className="text-[#A0AEC0]" /> {distance}
+          </span>
           <Badge status={status} size="sm" />
         </div>
       </div>
