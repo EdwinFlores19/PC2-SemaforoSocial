@@ -4,6 +4,7 @@ import CandidateView from './components/CandidateView';
 import EmployerView from './components/EmployerView';
 import WorkerDashboard from './components/WorkerDashboard';
 import ClientMap from './components/ClientMap';
+import FintechView from './components/FintechView';
 
 export default function App(): React.JSX.Element {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function App(): React.JSX.Element {
               <Link to="/employer" className="hover:text-blue-600 transition-colors">Portal Reclutador</Link>
               <Link to="/chambea-ahora" className="hover:text-blue-600 transition-colors font-bold text-teal-600">💼 Chambea Ahora!</Link>
               <Link to="/buscar" className="hover:text-blue-600 transition-colors font-bold text-amber-600">📍 Buscar Servicios</Link>
+              <Link to="/payments" className="hover:text-blue-600 transition-colors font-bold text-blue-600">📶 POS Virtual & Pagos</Link>
             </nav>
           </div>
           <div className="flex items-center gap-4">
@@ -56,7 +58,8 @@ export default function App(): React.JSX.Element {
           <Route path="/candidate" element={<CandidateView />} />
           <Route path="/employer" element={<EmployerView />} />
           <Route path="/chambea-ahora" element={<WorkerDashboard />} />
-          <Route path="/buscar" element={<ClientMap />} />
+           <Route path="/buscar" element={<ClientMap />} />
+          <Route path="/payments" element={<FintechView />} />
         </Routes>
       </main>
 
