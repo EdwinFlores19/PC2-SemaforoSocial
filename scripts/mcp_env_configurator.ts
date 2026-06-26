@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * scripts/setup_mcps.ts
+ * scripts/mcp_env_configurator.ts
  * ─────────────────────────────────────────────────────────────────────────────
  * Script de configuración automática de MCPs para el proyecto PC2-PFDC3 (TypeScript)
  * 

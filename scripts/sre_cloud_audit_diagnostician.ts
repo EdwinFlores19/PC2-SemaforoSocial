@@ -1,5 +1,5 @@
 /**
- * scripts/audit_sre.ts — Dry-Run de Auditoría e Diagnóstico de Confiabilidad SRE (Read-Only)
+ * scripts/sre_cloud_audit_diagnostician.ts — Dry-Run de Auditoría e Diagnóstico de Confiabilidad SRE (Read-Only)
  */
 
 import https from 'https';

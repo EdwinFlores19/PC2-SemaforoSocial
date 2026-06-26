@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * scripts/devsecops_commit.ts — Automatización Agéntica de Commit y Push DevSecOps
+ * scripts/devsecops_git_gatekeeper.ts — Automatización Agéntica de Commit y Push DevSecOps
  * 
  * PROPÓSITO:
  *   Este script actúa como un "Skill" de Git inteligente que obliga al desarrollador

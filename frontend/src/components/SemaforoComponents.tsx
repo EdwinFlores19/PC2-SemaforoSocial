@@ -1,6 +1,8 @@
 import React from 'react';
 
+// ==========================================
 // 1. Card Component
+// ==========================================
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
@@ -16,7 +18,9 @@ export const Card: React.FC<CardProps> = ({ children, className = '', ...props }
   );
 };
 
+// ==========================================
 // 2. Button Component
+// ==========================================
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'ghost';
   children: React.ReactNode;
@@ -42,13 +46,16 @@ export const Button: React.FC<ButtonProps> = ({ variant = 'primary', children, c
   );
 };
 
+// ==========================================
 // 3. Badge Component
+// ==========================================
 interface BadgeProps {
   status: 'ROJO' | 'AMARILLO' | 'VERDE' | string;
+  text?: string;
   size?: 'sm' | 'md';
 }
 
-export const Badge: React.FC<BadgeProps> = ({ status, size = 'md' }) => {
+export const Badge: React.FC<BadgeProps> = ({ status, text, size = 'md' }) => {
   const normStatus = status.toUpperCase();
   
   let dotColor = 'bg-[#E53E3E]';
@@ -71,6 +78,8 @@ export const Badge: React.FC<BadgeProps> = ({ status, size = 'md' }) => {
     label = '🟢 Verificado / Completo';
   }
 
+  const displayText = text || label;
+
   return (
     <span
       className={`inline-flex items-center gap-2 font-mono font-bold border rounded-full ${
@@ -78,14 +87,16 @@ export const Badge: React.FC<BadgeProps> = ({ status, size = 'md' }) => {
       } ${bgColor} ${textColor} ${borderClass}`}
     >
       <span className={`h-2 w-2 rounded-full ${dotColor}`} />
-      {label}
+      <span>{displayText}</span>
     </span>
   );
 };
 
 export const SemaforoBadge = Badge;
 
+// ==========================================
 // 4. Progress Component
+// ==========================================
 interface SemaforoProgressProps {
   score: number;
   maxScore?: number;
@@ -108,7 +119,7 @@ export const SemaforoProgress: React.FC<SemaforoProgressProps> = ({ score, maxSc
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2.5 text-xs text-[#A0AEC0] font-bold font-mono">
-        <span className="uppercase tracking-wider">PROGRESO DE FORMALIZACIÓN</span>
+        <span className="uppercase tracking-wider font-mono">PROGRESO DE FORMALIZACIÓN</span>
         <span className="text-[14px] text-[#F7FAFC] font-black">{percentage}%</span>
       </div>
       <div className="relative w-full bg-[#1A202C] h-4 rounded-full border border-white/5 shadow-inner">
@@ -146,17 +157,20 @@ export const SemaforoProgressBar = ({ score, maxScore = 100 }: { score: number; 
   <SemaforoProgress score={score} maxScore={maxScore} />
 );
 
-// 5. MetricCard Component
+// ==========================================
+// 5. MetricCard Component (icon accepts ReactNode)
+// ==========================================
 interface MetricCardProps {
-  icon: string;
+  icon: React.ReactNode;
   value: string;
   label: string;
+  className?: string;
 }
 
-export const MetricCard: React.FC<MetricCardProps> = ({ icon, value, label }) => {
+export const MetricCard: React.FC<MetricCardProps> = ({ icon, value, label, className = '' }) => {
   return (
-    <Card className="flex flex-col items-center justify-center text-center p-6 bg-[#171923]">
-      <span className="text-3xl block mb-2">{icon}</span>
+    <Card className={`flex flex-col items-center justify-center text-center p-6 bg-[#171923] ${className}`}>
+      <div className="mb-2.5">{icon}</div>
       <span className="text-[32px] font-bold text-[#F7FAFC] font-mono leading-none">{value}</span>
       <span className="text-[13px] font-semibold text-[#A0AEC0] uppercase tracking-[0.05em] font-mono mt-2.5 text-center">
         {label}
@@ -165,9 +179,11 @@ export const MetricCard: React.FC<MetricCardProps> = ({ icon, value, label }) =>
   );
 };
 
-// 6. RoleCard Component
+// ==========================================
+// 6. RoleCard Component (icon accepts ReactNode)
+// ==========================================
 interface RoleCardProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   description: string;
   onClick: () => void;
@@ -198,7 +214,9 @@ export const RoleCard: React.FC<RoleCardProps> = ({ icon, title, description, on
   );
 };
 
+// ==========================================
 // 7. WorkerCard Component
+// ==========================================
 interface WorkerCardProps {
   name: string;
   specialty: string;

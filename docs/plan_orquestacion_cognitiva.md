@@ -52,13 +52,13 @@ Para evitar colisiones de agentes y mantener una velocidad de desarrollo vertigi
 [Crea/Edita los archivos locales]
     │
     ▼
-[Ejecuta npx tsx scripts/generate_crud.ts <EntityName>]
+[Ejecuta npx tsx scripts/mvc_crud_boilerplate_generator.ts <EntityName>]
     │  (Genera la estructura de rutas, controladores, servicios y repositorios)
     ▼
 [Agente DevOps local corre npx tsc --noEmit / npm test]
     │  (Verifica compilación en verde)
     ▼
-[Publicación mediante scripts/devsecops_commit.ts "feat(modulo): ..."]
+[Publicación mediante scripts/devsecops_git_gatekeeper.ts "feat(modulo): ..."]
     │  (Push seguro que dispara despliegue automático)
     ▼
 [Listo en Producción]
@@ -69,4 +69,4 @@ Para evitar colisiones de agentes y mantener una velocidad de desarrollo vertigi
 ## 4. Mitigación de Conflictos de Agentes y Fallos
 
 *   **Evita que múltiples herramientas escriban a la vez:** Trabaja con un solo hilo principal de chat de agente local en VS Code. No uses Antigravity y OpenCode compitiendo en el mismo archivo.
-*   **Filtro pre-commit:** El script de commit `devsecops_commit.ts` actuará como tu salvaguarda. Si cometes un error copiando y pegando tipos de TypeScript, el script detendrá el commit antes de subirlo y te dirá exactamente en qué línea falló la compilación, asegurando que tu rama pública se mantenga 100% estable.
+*   **Filtro pre-commit:** El script de commit `devsecops_git_gatekeeper.ts` actuará como tu salvaguarda. Si cometes un error copiando y pegando tipos de TypeScript, el script detendrá el commit antes de subirlo y te dirá exactamente en qué línea falló la compilación, asegurando que tu rama pública se mantenga 100% estable.

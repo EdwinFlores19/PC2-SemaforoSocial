@@ -40,8 +40,8 @@ PC2-PFDC3/
 │   │   └── main.tsx            # Punto de entrada
 │   └── vercel.json             # Redireccionamiento 404 para Vercel
 ├── scripts/                    # Scripts de Automatización
-│   ├── generate_crud.ts        # Generador de CRUD TS MVC autónomo
-│   └── devsecops_commit.ts     # Skill de validación pre-commit y push
+│   ├── mvc_crud_boilerplate_generator.ts        # Generador de CRUD TS MVC autónomo
+│   └── devsecops_git_gatekeeper.ts     # Skill de validación pre-commit y push
 └── render.yaml                 # Blueprint declarativo para Render
 ```
 

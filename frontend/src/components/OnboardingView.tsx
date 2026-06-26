@@ -187,7 +187,6 @@ export default function OnboardingView(): React.JSX.Element {
             {/* MINTRA upload area for minors (14-17) */}
             {needsMintra && (
               <div
-                data-testid="upload-mintra-pdf"
                 className="p-5 border-2 border-dashed border-[#F6AD55]/40 bg-[#F6AD55]/5 rounded-xl space-y-3 animate-fadeIn"
               >
                 <div className="flex items-center gap-2 text-[#F6AD55] font-bold text-sm">
@@ -199,6 +198,7 @@ export default function OnboardingView(): React.JSX.Element {
                 </p>
                 <input
                   type="file"
+                  data-testid="upload-mintra-pdf"
                   accept="application/pdf"
                   onChange={handleFileChange}
                   className="block w-full text-xs text-[#A0AEC0] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#F6AD55] file:text-[#0F1117] hover:file:bg-[#f59e0b] file:cursor-pointer cursor-pointer"

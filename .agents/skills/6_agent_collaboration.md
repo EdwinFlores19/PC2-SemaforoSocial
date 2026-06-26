@@ -29,7 +29,7 @@ Cuando el desarrollador copie y pegue un prompt estructurado desde la base de co
 *   Al recibir las especificaciones de entidades (ej: `Product` y `User`), el agente DBA local debe mapearlas en el `schema.prisma`.
 *   Inmediatamente después de actualizar el esquema, el agente debe ejecutar:
     ```bash
-    npx tsx scripts/generate_crud.ts <NombreEntidad> <Ruta_API>
+    npx tsx scripts/mvc_crud_boilerplate_generator.ts <NombreEntidad> <Ruta_API>
     ```
     *Esto automatizará el 90% del boilerplate del backend en TypeScript con cero margen de error sintáctico.*
 
@@ -40,6 +40,6 @@ Cuando el desarrollador copie y pegue un prompt estructurado desde la base de co
 ### 2.3 Compilación y Publicación
 Una vez que el código ha sido pegado e integrado localmente, **el agente nunca debe hacer git push de forma manual**. Debe invocar el script automatizado DevSecOps:
 ```bash
-npx tsx scripts/devsecops_commit.ts "feat(modulo): agregar modulo [nombre] de negocio"
+npx tsx scripts/devsecops_git_gatekeeper.ts "feat(modulo): agregar modulo [nombre] de negocio"
 ```
 *Este comando compilará el código de forma exhaustiva en el backend y el frontend. Si hay un error de tipos, detendrá el commit de forma segura, informando de inmediato la línea de error para su corrección.*

@@ -1,0 +1,95 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "🛣️ EnRuta" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e8]: 🛣️
+        - generic [ref=e9]: EnRuta
+      - generic [ref=e10]:
+        - button "Ingresar" [ref=e11]
+        - button "Salir" [ref=e12]
+  - generic [ref=e13]:
+    - link "Dashboard" [ref=e14] [cursor=pointer]:
+      - /url: /dashboard
+    - link "Coach CV" [ref=e15] [cursor=pointer]:
+      - /url: /candidate
+    - link "Buscar RAG" [ref=e16] [cursor=pointer]:
+      - /url: /employer
+    - link "Chambea Ahora!" [ref=e17] [cursor=pointer]:
+      - /url: /chambea-ahora
+    - link "Mapa Vial" [ref=e18] [cursor=pointer]:
+      - /url: /buscar
+    - link "POS & Pagos" [ref=e19] [cursor=pointer]:
+      - /url: /payments
+    - link "KYC Registro" [ref=e20] [cursor=pointer]:
+      - /url: /onboarding
+  - main [ref=e21]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]: 🚀 TECNOLOGÍA CON IMPACTO SOCIAL REAL
+        - heading "Plataforma EnRuta" [level=1] [ref=e25]
+        - paragraph [ref=e26]: Un sistema inteligente on-demand de micro-empleo y fintech enfocado en la **formalización, capacitación y salud financiera** de trabajadores independientes en Perú, con control estricto contra el trabajo infantil.
+        - generic [ref=e27]:
+          - button "💼 ¡Chambea Ahora!" [ref=e28]
+          - button "📍 Buscar Servicios" [ref=e29]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: 🧹
+          - generic [ref=e33]: 350+
+          - generic [ref=e34]: Trabajadores Activos
+        - generic [ref=e35]:
+          - generic [ref=e36]: 🛡️
+          - generic [ref=e37]: 0%
+          - generic [ref=e38]: Trabajo Infantil
+        - generic [ref=e39]:
+          - generic [ref=e40]: 🎓
+          - generic [ref=e41]: 4,200+
+          - generic [ref=e42]: Cursos Completados
+        - generic [ref=e43]:
+          - generic [ref=e44]: 💳
+          - generic [ref=e45]: S/. 12.5K
+          - generic [ref=e46]: Procesado POS
+      - generic [ref=e47]:
+        - generic [ref=e48] [cursor=pointer]:
+          - generic [ref=e49]:
+            - generic [ref=e50]: 🧹
+            - heading "Soy Trabajador Vial" [level=2] [ref=e51]
+            - paragraph [ref=e52]: Accede a tu panel 'Chambea Ahora!', sube tu semáforo de formalización con cursos y obtén micro-créditos.
+          - button "Ir a Chambea Ahora →" [ref=e53]
+        - generic [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: 📍
+            - heading "Necesito Asistencia" [level=2] [ref=e57]
+            - paragraph [ref=e58]: Encuentra asistentes viales de confianza geolocalizados en semáforos cerca de ti y califícalos con estrellas.
+          - button "Buscar Trabajadores →" [ref=e59]
+        - generic [ref=e60] [cursor=pointer]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: 📶
+            - heading "POS Virtual & Fintech" [level=2] [ref=e63]
+            - paragraph [ref=e64]: Gestiona cobros sin contacto mediante NFC Tap-to-Pay y códigos QR Yape/Plin con split automático de comisiones.
+          - button "Abrir POS & Billetera →" [ref=e65]
+  - contentinfo [ref=e66]:
+    - generic [ref=e67]:
+      - paragraph [ref=e68]: 🛣️ EnRuta — Transformación Social Vial con IA & Fintech
+      - paragraph [ref=e69]: © 2026 — PC2 Boilerplate Full-Stack. Ecosistema Agéntico SRE. Fiscalización MINTRA/MIMP.
+  - generic [ref=e70]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic:
+          - img
+        - generic [ref=e83]:
+          - heading "Asistente de Servicio Express" [level=3] [ref=e84]
+          - generic [ref=e86]: Semi 🚦 Online
+      - generic [ref=e87]: cliente
+    - generic [ref=e90]:
+      - generic:
+        - img
+      - generic [ref=e101]: ¡Hola! Soy Semi 🚦 ¿Buscas un lavado express cerca de ti o deseas saber cómo calificar a nuestros asistentes viales?
+    - generic [ref=e102]:
+      - button "📍 Buscar lavadores cerca" [ref=e103]
+      - button "⭐ ¿Cómo califico el servicio?" [ref=e104]
+      - button "❓ ¿Cómo funciona el pago digital?" [ref=e105]
+      - button "🚗 Tarifas de Car Wash" [ref=e106]
+    - generic [ref=e108]:
+      - textbox "Escribe tu mensaje aquí..." [ref=e109]
+      - button "Enviar" [disabled] [ref=e110]

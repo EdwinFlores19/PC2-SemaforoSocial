@@ -1,14 +1,14 @@
 #!/usr/bin/env tsx
 /**
- * scripts/generate_crud.ts — Generador Autónomo de CRUD en TypeScript para Backend MVC
+ * scripts/mvc_crud_boilerplate_generator.ts — Generador Autónomo de CRUD en TypeScript para Backend MVC
  * 
  * PROPÓSITO:
  *   Reemplazar el generador de PowerShell obsoleto (.js CommonJS) con un generador
  *   robusto en TypeScript que produce código 100% compatible con nuestra arquitectura.
  * 
  * USO:
- *   npx tsx scripts/generate_crud.ts <EntityName> <RoutePath>
- *   Ejemplo: npx tsx scripts/generate_crud.ts Product products
+ *   npx tsx scripts/mvc_crud_boilerplate_generator.ts <EntityName> <RoutePath>
+ *   Ejemplo: npx tsx scripts/mvc_crud_boilerplate_generator.ts Product products
  */
 
 import fs from 'fs';
@@ -38,7 +38,7 @@ const err = (msg: string) => console.log(`${c.red}❌ ${msg}${c.reset}`);
 
 if (!EntityName) {
   err('Especifica el nombre de la entidad.');
-  console.log(`Uso: npx tsx scripts/generate_crud.ts <EntityName> <RoutePath>`);
+  console.log(`Uso: npx tsx scripts/mvc_crud_boilerplate_generator.ts <EntityName> <RoutePath>`);
   process.exit(1);
 }
 
