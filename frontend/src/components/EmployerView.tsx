@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import apiClient from '../api/axios';
+import { Card, Button } from './SemaforoComponents.js';
 
 interface Message {
   role: 'user' | 'model';
@@ -7,7 +8,7 @@ interface Message {
 }
 
 export default function EmployerView(): React.JSX.Element {
-  // Estado para el Chat de Reclutamiento RAG
+  // Chat States
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [sendingChat, setSendingChat] = useState(false);
@@ -15,27 +16,26 @@ export default function EmployerView(): React.JSX.Element {
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll chat al final
+  // Auto-scroll chat to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Cargar historial inicial de Reclutamiento (si existe) al montar
+  // Load initial chat history on mount
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const { data } = await apiClient.post('/ai/chat/employer', { message: 'Hola' });
+        const { data } = await apiClient.post('/api/v1/ai/chat/employer', { message: 'Hola' });
         if (data?.data?.history) {
           setMessages(data.data.history);
         }
       } catch (err) {
-        console.warn('No se pudo precargar historial de reclutamiento:', err);
+        console.warn('Could not pre-load chatbot history:', err);
       }
     };
     fetchHistory();
   }, []);
 
-  // Manejar envío de Mensaje a Ramiro
   const handleSendMessage = async (messageText: string) => {
     const textToSend = messageText.trim();
     if (!textToSend || sendingChat) return;
@@ -61,7 +61,6 @@ export default function EmployerView(): React.JSX.Element {
     }
   };
 
-  // Consultas rápidas recomendadas
   const quickQueries = [
     'Recomiéndame mejores operarios para Car Wash',
     'Busco operarios con Atención al Cliente en Breña',
@@ -70,63 +69,64 @@ export default function EmployerView(): React.JSX.Element {
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      {/* SECCIÓN DE TÍTULO */}
-      <div className="bg-gradient-to-r from-[#1E1627] via-[#101625] to-[#0B0F19] border border-slate-800 rounded-3xl p-6 md:p-8 text-white shadow-xl">
-        <span className="bg-brand-purple/10 text-purple-400 border border-brand-purple/20 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-block mb-3">
-          🔎 COBERTURA DE SELECCIÓN CON INTELIGENCIA ARTIFICIAL (RAG)
+    <div className="space-y-8 max-w-7xl mx-auto px-4">
+      {/* HEADER SECTION - Role Empresa Accent Orange (#DD6B20) */}
+      <div className="bg-gradient-to-r from-[#171923] via-[#1A202C] to-[#0F1117] border border-[#2D3748] rounded-[12px] p-6 md:p-8 text-white shadow-xl">
+        <span className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider font-mono inline-block mb-3">
+          🔎 BÚSQUEDA DE SELECCIÓN CON INTELIGENCIA ARTIFICIAL (RAG) — EMPRESAS
         </span>
         <h1 className="text-3xl md:text-4xl font-black tracking-tight">Panel de Reclutamiento RAG & Asistente IA</h1>
-        <p className="mt-2 text-slate-400 max-w-2xl text-sm md:text-base leading-relaxed">
+        <p className="mt-2 text-[#A0AEC0] max-w-2xl text-sm md:text-base leading-relaxed">
           Encuentra al talento idóneo de forma conversacional. Nuestra IA conecta con tu base de datos en tiempo real, evalúa experiencias informales y las traduce a aptitudes ideales para tu negocio formal.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* PARTE IZQUIERDA: INSTRUCCIONES Y CÓMO FUNCIONA EL RAG */}
-        <div className="bg-[#101625] rounded-3xl border border-slate-800/80 shadow-2xl p-6 md:p-8 lg:col-span-1 flex flex-col justify-between space-y-6">
+        
+        {/* PARTE IZQUIERDA: CÓMO FUNCIONA EL RAG */}
+        <Card className="lg:col-span-1 flex flex-col justify-between space-y-6 bg-[#171923] border border-[#2D3748]">
           <div className="space-y-6">
-            <div className="border-b border-slate-800 pb-4">
+            <div className="border-b border-[#2D3748] pb-4">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                🔍 Búsqueda Inteligente RAG
+                🔍 Búsqueda Semántica RAG
               </h2>
-              <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                Cómo optimizamos tu reclutamiento de personal con Inteligencia Artificial Semántica.
+              <p className="text-xs text-[#A0AEC0] mt-1.5 leading-relaxed">
+                Cómo optimizamos tu reclutamiento de personal con Inteligencia Semántica.
               </p>
             </div>
 
             <div className="space-y-5">
               <div className="flex gap-4">
-                <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 h-10 w-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                <div className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 font-mono">
                   1
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Consulta Semántica</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  <h3 className="text-sm font-bold text-white">Consulta Natural</h3>
+                  <p className="text-xs text-[#A0AEC0] mt-1 leading-relaxed">
                     Escribe con lenguaje natural lo que necesitas. Buscaremos candidatos por cercanía, aptitudes y equivalencias de trabajo informal.
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 h-10 w-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                <div className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 font-mono">
                   2
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Inyección de Datos (RAG)</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Extraemos perfiles de candidatos de nuestra base de datos de PostgreSQL de forma 100% segura y los proveemos a Gemini.
+                  <h3 className="text-sm font-bold text-white">Inyección Vectorial</h3>
+                  <p className="text-xs text-[#A0AEC0] mt-1 leading-relaxed">
+                    Extraemos perfiles de candidatos de nuestra base de datos de PostgreSQL de forma 100% segura y los procesamos mediante RAG.
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-4">
-                <div className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 h-10 w-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 font-mono">
+                <div className="bg-[#DD6B20]/10 text-[#DD6B20] border border-[#DD6B20]/20 h-10 w-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 font-mono">
                   3
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Recomendaciones Justificadas</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  <h3 className="text-sm font-bold text-white">Recomendación Justificada</h3>
+                  <p className="text-xs text-[#A0AEC0] mt-1 leading-relaxed">
                     El chatbot te genera un listado de los mejores matches, explicando por qué calzan para el puesto y qué preguntarles.
                   </p>
                 </div>
@@ -134,41 +134,38 @@ export default function EmployerView(): React.JSX.Element {
             </div>
           </div>
 
-          <div className="bg-[#171E31] border border-slate-800 rounded-2xl p-5">
-            <h4 className="text-xs font-bold text-[#06b6d4] uppercase mb-2 font-mono tracking-wider">💡 Tip de Selección:</h4>
+          <div className="bg-[#0F1117] border border-[#2D3748] rounded-xl p-5">
+            <h4 className="text-xs font-bold text-[#DD6B20] uppercase mb-2 font-mono tracking-wider">💡 Tip de Selección:</h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Los trabajadores informales tienen habilidades valiosas y adaptables. Nuestro bot te ayudará a traducir sus antiguas labores en competencias clave de servicio, caja y operaciones.
+              Los trabajadores de la vía pública tienen habilidades de venta y resiliencia valiosas. Nuestro bot te ayudará a traducir sus antiguas labores en competencias operativas de caja y almacén.
             </p>
           </div>
-        </div>
+        </Card>
 
-        {/* PARTE DERECHA: CHATBOT DE RECOMPENSACIÓN INTELIGENTE (RAG) */}
-        <div className="bg-[#101625] rounded-3xl border border-slate-800/80 shadow-2xl p-6 md:p-8 lg:col-span-2 flex flex-col h-[620px] justify-between">
+        {/* PARTE DERECHA: CHATBOT RAG */}
+        <Card className="lg:col-span-2 flex flex-col h-[620px] justify-between bg-[#171923] border border-[#2D3748]">
           <div className="flex flex-col h-full justify-between">
-            <div className="border-b border-slate-800 pb-4 flex items-center justify-between">
+            <div className="border-b border-[#2D3748] pb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white flex items-center gap-2">
                   🤖 Ramiro, tu Asesor de Selección
                 </h2>
-                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                <p className="text-xs text-[#A0AEC0] mt-1">
                   Pregunta por perfiles, ubicación, habilidades o rubros. Buscaremos candidatos reales para ti.
                 </p>
               </div>
               <span className="flex h-3 w-3 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#DD6B20] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-[#DD6B20]"></span>
               </span>
             </div>
 
-            {/* MENSAJES DE CHAT */}
-            <div className="flex-grow overflow-y-auto space-y-4 pr-1 my-4 scrollbar-thin">
+            {/* MESSAGES */}
+            <div className="flex-grow overflow-y-auto space-y-4 pr-1 my-4">
               {messages.length === 0 && (
-                <div className="text-center text-slate-500 my-12 space-y-3">
-                  <svg className="mx-auto h-12 w-12 text-slate-700 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                  </svg>
+                <div className="text-center text-[#A0AEC0] my-12 space-y-3">
                   <p className="text-sm font-bold text-slate-300">Buscador conversacional activo.</p>
-                  <p className="text-xs text-slate-400 max-w-xs mx-auto">Prueba preguntándole a Ramiro: "Busco personas con experiencia en atención al cliente que vivan en Breña".</p>
+                  <p className="text-xs text-[#A0AEC0] max-w-xs mx-auto">Prueba preguntándole a Ramiro: "Busco personas con experiencia en atención al cliente que vivan en Breña".</p>
                 </div>
               )}
 
@@ -180,8 +177,8 @@ export default function EmployerView(): React.JSX.Element {
                   <div
                     className={`max-w-[90%] rounded-2xl px-5 py-4 text-sm shadow-md leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-indigo-600 text-white rounded-br-none'
-                        : 'bg-slate-900 text-slate-200 rounded-bl-none border border-slate-800'
+                        ? 'bg-[#3B82F6] text-white rounded-br-none'
+                        : 'bg-[#0F1117] text-slate-200 rounded-bl-none border border-[#2D3748]'
                     }`}
                     style={{ whiteSpace: 'pre-line' }}
                   >
@@ -194,35 +191,35 @@ export default function EmployerView(): React.JSX.Element {
 
               {sendingChat && (
                 <div className="flex justify-start">
-                  <div className="bg-slate-900 border border-slate-800 text-slate-400 rounded-2xl rounded-bl-none px-5 py-4 text-sm flex items-center gap-3 shadow-md">
+                  <div className="bg-[#0F1117] border border-[#2D3748] text-[#A0AEC0] rounded-2xl rounded-bl-none px-5 py-4 text-sm flex items-center gap-3 shadow-md">
                     <div className="flex gap-1">
-                      <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1.5 w-1.5 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span className="h-1.5 w-1.5 bg-[#DD6B20] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="h-1.5 w-1.5 bg-[#DD6B20] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="h-1.5 w-1.5 bg-[#DD6B20] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
-                    <span>Ramiro está analizando la base de datos...</span>
+                    <span>Ramiro está consultando la base de datos...</span>
                   </div>
                 </div>
               )}
 
               {chatError && (
-                <div className="p-3 bg-red-500/10 text-red-400 text-xs rounded-xl border border-red-500/20 text-center font-medium font-mono">
+                <div className="p-3 bg-[#E53E3E]/10 text-[#E53E3E] text-xs rounded-xl border border-[#E53E3E]/20 text-center font-medium font-mono">
                   ⚠️ {chatError}
                 </div>
               )}
               <div ref={chatEndRef} />
             </div>
 
-            {/* CONSULTAS RÁPIDAS */}
-            <div className="space-y-2 border-t border-slate-800/60 pt-4">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide font-mono">Sugerencias de búsqueda:</p>
+            {/* QUICK SUGGESTIONS */}
+            <div className="space-y-2 border-t border-[#2D3748] pt-4">
+              <p className="text-[10px] font-bold text-[#A0AEC0] uppercase tracking-wide font-mono">Sugerencias de búsqueda:</p>
               <div className="flex flex-wrap gap-2">
                 {quickQueries.map((q, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSendMessage(q)}
                     disabled={sendingChat}
-                    className="bg-slate-900 hover:bg-indigo-900/40 hover:text-indigo-400 hover:border-indigo-500/30 text-slate-300 text-xs px-3 py-2 border border-slate-800 rounded-xl transition-all disabled:opacity-50 font-semibold"
+                    className="bg-[#0F1117] hover:bg-[#1A202C] hover:text-[#F7FAFC] text-[#A0AEC0] text-xs px-3 py-2 border border-[#2D3748] rounded-xl transition-all disabled:opacity-50 font-semibold min-h-[36px]"
                   >
                     {q}
                   </button>
@@ -239,20 +236,20 @@ export default function EmployerView(): React.JSX.Element {
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(inputMessage)}
                   placeholder="Busco operarios con experiencia en atención al cliente..."
-                  className="flex-grow bg-slate-900 border border-slate-800 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                  className="flex-grow bg-[#0F1117] border border-[#2D3748] rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:ring-2 focus:ring-[#3B82F6] outline-none transition-all"
                   disabled={sendingChat}
                 />
-                <button
+                <Button
                   onClick={() => handleSendMessage(inputMessage)}
                   disabled={!inputMessage.trim() || sendingChat}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm shadow-md transition-all disabled:bg-slate-800 disabled:text-slate-500 shrink-0"
+                  className="min-h-[44px] shrink-0 bg-[#3B82F6] hover:bg-[#2563EB]"
                 >
-                  Buscar Talentos
-                </button>
+                  Buscar
+                </Button>
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

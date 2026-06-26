@@ -10,6 +10,6 @@ describe('App', () => {
         <App />
       </MemoryRouter>
     );
-    expect(screen.getByText('PC2-PFDC3')).toBeInTheDocument();
+    expect(screen.getByText('En')).toBeInTheDocument();
   });
 });
