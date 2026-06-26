@@ -288,7 +288,6 @@ class JiraClient:
                 "issuetype": {"name": "Epic"},
                 # Campo personalizado para Epic Name (requerido en proyectos clásicos de Jira)
                 # "customfield_10011": title,  # Epic Name — descomentar si da error
-                "story_points": story_points,  # Puede variar según la configuración del proyecto
             }
         }
 
@@ -343,7 +342,7 @@ class JiraClient:
                 "project": {"key": self.project_key},
                 "summary": title,
                 "description": self._build_adf_description(description_text, acceptance_criteria),
-                "issuetype": {"name": "Story"},
+                "issuetype": {"name": "Historia"},
                 "priority": {"name": priority},
                 "labels": labels,
             }
@@ -351,10 +350,7 @@ class JiraClient:
 
         # Vincular a la épica padre
         if epic_key:
-            # En proyectos Next-gen de Jira Cloud, se usa 'customfield_10014' (Epic Link)
-            payload["fields"]["customfield_10014"] = epic_key
-            # Alternativa para proyectos clásicos (Parent Link):
-            # payload["fields"]["parent"] = {"key": epic_key}
+            payload["fields"]["parent"] = {"key": epic_key}
 
         # Story Points
         if story_points:

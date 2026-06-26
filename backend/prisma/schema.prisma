@@ -49,6 +49,7 @@ model User {
   educationalProgress  EducationalProgress[]
   formalizationProfile FormalizationProfile?
   sunatAuditLogs       SUNATAuditLog[]
+  sosAlerts            SOSAlert[]
 
   @@index([email])
   @@map("users")
@@ -150,6 +151,7 @@ enum RequestStatus {
   EN_EJECUCION
   FINALIZADO
   CANCELADO
+  EN_PELIGRO
 
   @@map("request_status")
 }
@@ -508,4 +510,22 @@ enum AuditStatus {
   EXCEEDED_LIMIT       // Si superó el límite del RUS y requiere regularización
 
   @@map("audit_status")
+}
+
+// ─────────────────────────────────────────────
+// MODELO SOS ALERT (SRE ALERTA DE PÁNICO SILENCIOSA)
+// ─────────────────────────────────────────────
+model SOSAlert {
+  id        String   @id @default(uuid())
+  userId    String?  @map("user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  latitude  Float
+  longitude Float
+  status    String   @default("ACTIVE") // ACTIVE, RESOLVED
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@map("sos_alerts")
 }

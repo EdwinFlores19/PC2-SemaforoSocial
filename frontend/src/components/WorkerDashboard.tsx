@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import apiClient from '../api/axios';
 
 interface MetricDetail {
   id: string;
@@ -9,6 +10,39 @@ interface MetricDetail {
 }
 
 export default function WorkerDashboard(): React.JSX.Element {
+  // Estados para el SOS Silencioso (Long Press 3 segundos)
+  const [sosActive, setSosActive] = useState(false);
+  const [sosSending, setSosSending] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startPress = () => {
+    if (sosSending) return;
+    timerRef.current = setTimeout(async () => {
+      setSosSending(true);
+      setSosActive(true);
+      try {
+        await apiClient.post('/services/sos', {
+          latitude: -12.122485, // Coordenadas simuladas en Lima/Miraflores
+          longitude: -77.031023,
+        });
+      } catch (error) {
+        console.warn('Error silencioso al enviar alerta SOS:', error);
+      } finally {
+        setTimeout(() => {
+          setSosActive(false);
+          setSosSending(false);
+        }, 4000); // 4 segundos de confirmación visual sutil
+      }
+    }, 3000); // 3 segundos para el long press
+  };
+
+  const endPress = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
   // Simulamos el progreso interactivo para el MVP
   const [legalMetrics] = useState<MetricDetail[]>([
     { id: 'l1', name: 'Identidad Verificada (DNI + Biometría)', score: 12, maxScore: 12, completed: true },
@@ -98,14 +132,30 @@ export default function WorkerDashboard(): React.JSX.Element {
       <div className="bg-[#0f172a]/45 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.50)] p-6 md:p-8 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
           {/* Luz de Semáforo */}
-          <div className="flex flex-col items-center justify-center text-center md:border-r md:border-white/10 py-4">
-            <div className="flex flex-col gap-3 bg-black/40 p-4 rounded-3xl border border-white/5 w-24 items-center">
+          <div className="flex flex-col items-center justify-center text-center md:border-r md:border-white/10 py-4 relative">
+            {/* Micro-brillo rojo de confirmación de alerta SOS Silencioso */}
+            {sosActive && (
+              <div className="absolute top-2 right-2 flex h-2.5 w-2.5 z-10" data-testid="sos-brillo-confirmacion">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ef4444] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#ef4444] shadow-[0_0_10px_rgba(239,68,68,0.9)]"></span>
+              </div>
+            )}
+            <div
+              className={`flex flex-col gap-3 bg-black/40 p-4 rounded-3xl border w-24 items-center select-none cursor-pointer transition-all duration-300 ${sosActive ? 'border-[#ef4444]/60 shadow-[0_0_20px_rgba(239,68,68,0.45)] scale-95' : 'border-white/5'}`}
+              onMouseDown={startPress}
+              onMouseUp={endPress}
+              onMouseLeave={endPress}
+              onTouchStart={startPress}
+              onTouchEnd={endPress}
+              title="Mantén presionado por 3 segundos para activar SOS silencioso"
+              data-testid="sos-trigger"
+            >
               {/* Luz Roja */}
-              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore < 40 ? 'bg-[#ef4444] shadow-[0_0_15px_rgba(239,68,68,0.8)]' : 'bg-red-950/40'}`}></div>
+              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore < 40 || sosActive ? 'bg-[#ef4444] shadow-[0_0_15px_rgba(239,68,68,0.8)]' : 'bg-red-950/40'}`}></div>
               {/* Luz Amarilla */}
-              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore >= 40 && totalScore < 75 ? 'bg-[#f59e0b] shadow-[0_0_15px_rgba(245,158,11,0.8)]' : 'bg-amber-950/40'}`}></div>
+              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore >= 40 && totalScore < 75 && !sosActive ? 'bg-[#f59e0b] shadow-[0_0_15px_rgba(245,158,11,0.8)]' : 'bg-amber-950/40'}`}></div>
               {/* Luz Verde */}
-              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore >= 75 ? 'bg-[#10b981] shadow-[0_0_15px_rgba(16,185,129,0.8)]' : 'bg-emerald-950/40'}`}></div>
+              <div className={`w-10 h-10 rounded-full transition-all duration-300 ${totalScore >= 75 && !sosActive ? 'bg-[#10b981] shadow-[0_0_15px_rgba(16,185,129,0.8)]' : 'bg-emerald-950/40'}`}></div>
             </div>
             <div className="mt-4">
               <span className={`text-xs font-bold uppercase tracking-wider font-mono ${trafficLightText}`}>

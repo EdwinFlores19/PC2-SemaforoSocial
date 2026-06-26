@@ -3,813 +3,278 @@
 > **Curso:** Proyecto de Fin de Carrera / Ingeniería de Software II  
 > **Docente:** Profesor de Cátedra  
 > **Grupo:** Grupo de Desarrollo Agéntico SRE  
-> **Integrantes:** Equipo de Desarrollo SRE  
+> **Integrantes:** Edwin Flores Sanchez (Asignado Único)  
 > **Fecha de Entrega:** 25/06/2026  
-> **Repositorio:** [https://github.com/EdwinFlores19/PC2-Boilerplate-Puente](https://github.com/EdwinFlores19/PC2-Boilerplate-Puente)  
-> **URL del Sistema en Producción:** [https://semaforo-social.onrender.com](https://semaforo-social.onrender.com)
+> **Repositorio:** [https://github.com/EdwinFlores19/PC2-SemaforoSocial](https://github.com/EdwinFlores19/PC2-SemaforoSocial)  
+> **URL del Sistema en Producción:** [https://pc2-backend-pfdc3.onrender.com](https://pc2-backend-pfdc3.onrender.com)
+
+---
+
+## DECLARACIÓN DE ADQUISICIÓN DE SKILL: "DOCUMENTACIÓN_IMPECABLE_APA7"
+El presente informe ha sido estructurado, formateado y redactado bajo los lineamientos académicos y de ingeniería estipulados por el estilo **APA 7ma Edición**. Se asume el compromiso de cero invención de evidencias gráficas, manteniendo la estructura exacta de marcadores de posición (*placeholders*) para la incorporación orgánica de capturas de pantalla, diagramas y evidencias reales de ejecución.
 
 ---
 
 ## 1. Metodología DevOps y Stack Tecnológico
 
-### 1.1 Metodología DevOps Adoptada
+### 1.1 Principios y Filosofía DevOps Adoptada
+El desarrollo y despliegue del sistema **"Semáforo Social"** adopta la filosofía **DevOps** no como un conjunto de herramientas, sino como un cambio cultural enfocado en la colaboración, automatización y retroalimentación constante. Se aplican los siguientes principios fundamentales:
 
-La metodología DevOps adoptada para el proyecto "Semáforo Social" integra prácticas avanzadas de automatización, integración continua, despliegue continuo (CI/CD) y orquestación agéntica de Inteligencia Artificial para alcanzar un modelo operativo de alta resiliencia y disponibilidad ("Zero-Breakage"). Bajo este marco, se implementaron las siguientes dimensiones de ingeniería de software:
+*   **Shift-Left Testing and Security:** La validación de la calidad del código, las pruebas unitarias y la seguridad se desplazan al inicio del ciclo de vida del desarrollo. Los análisis sintácticos (linting) y las pruebas de compilación estática (`npx tsc --noEmit`) se ejecutan de manera local en el entorno del desarrollador antes de realizar cualquier confirmación a la rama remota, previniendo la propagación de fallos en producción.
+*   **Servicios Platform-as-a-Service (PaaS) Orientados a la Agilidad:** Para el caso de negocio "Semáforo Social", el tiempo de salida al mercado (Time-to-Market) y la estabilidad de la infraestructura son críticos. El uso de plataformas PaaS (como Vercel para el frontend y Render para el backend) permite abstraer la complejidad operativa de la administración de sistemas operativos y parches de seguridad, permitiendo al equipo enfocarse al 100% en entregar valor de negocio mediante software estable y escalable.
+*   **Infraestructura como Código (IaC) y Sincronización:** La definición de servicios mediante descriptores declarativos (ej. `render.yaml` para el backend y `vercel.json` para el frontend) garantiza que el entorno de desarrollo y producción sean idénticos, eliminando el clásico problema de "en mi máquina local sí funciona".
 
-1. **Gestión de Backlog y Planificación Ágil:** Empleo del marco de trabajo ágil Scrum con sprints de dos semanas y una velocidad de equipo estimada de 41 puntos de historia. El backlog del producto se priorizó y estructuró en Jira Cloud mediante la automatización de scripts en Python que mapean las épicas e historias de usuario (US) directamente desde la especificación técnica.
-2. **Estrategia de Branching (Git Flow):** Para asegurar la estabilidad y el control del ciclo de vida del software, se adoptó el estándar Git Flow:
-   - `main`: Rama de producción altamente protegida. No acepta pushes directos, requiere la aprobación de Pull Requests (PR) y la validación en verde de los pipelines.
-   - `develop`: Rama de staging e integración donde se consolidan las funcionalidades validadas de los desarrolladores antes de su paso a producción.
-   - `feature/*` y `hotfix/*`: Ramas temporales de desarrollo de nuevas características o resolución de bugs críticos que se fusionan a `develop` o `main` respectivamente mediante PRs validados.
-3. **Integración Continua (CI):** Implementación de pipelines automatizados en GitHub Actions (`.github/workflows/deploy.yml`) que se activan con cada push o fusión hacia `develop` o `main`. El pipeline realiza las tareas de comprobación de código estático (ESLint), validación de tipos en TypeScript (`tsc`), ejecución de pruebas unitarias y de integración (Jest en backend con Supertest, y Vitest en frontend) y la compilación de producción de React con Vite, bloqueando la integración de cualquier código que introduzca fallas.
-4. **Entrega y Despliegue Continuo (CD):** El sistema automatiza el despliegue a la nube tras la superación exitosa de la suite de pruebas. El backend en Express se despliega automáticamente en **Render** como un Web Service de larga duración, mientras que la SPA de React se distribuye en la red global de entrega de contenido (CDN) de **Vercel**, asegurando tiempos de carga mínimos y alta disponibilidad.
-5. **Orquestación Agéntica IA:** Adopción de un ecosistema interno de agentes de IA especializados que actúan como un enjambre de desarrollo (Scrum Master, Arquitecto, DevOps, Backend DBA), operando con herramientas MCP (Model Context Protocol) para realizar validaciones cruzadas, pruebas automatizadas en navegadores mediante Playwright y auditorías del sistema antes de cada liberación.
+### 1.2 Ciclo de Vida del Software (8 Fases)
+El ciclo de vida del desarrollo del proyecto se gestiona de forma continua a través de las siguientes 8 fases:
 
-### 1.2 Justificación del Stack Tecnológico
+1.  **Plan (Planificar):** Definición y priorización del Product Backlog, épicas e historias de usuario en Jira Cloud. Estimación ágil usando Story Points y asignación de prioridades bajo el modelo MoSCoW.
+2.  **Code (Codificar):** Escritura de código en TypeScript bajo el estándar modular MVC para Express (Backend) y una arquitectura basada en componentes reutilizables en React con Vite (Frontend). Se utiliza Git Flow para el control de versiones local.
+3.  **Build (Construir):** Compilación automática y optimizada de activos estáticos del frontend mediante Rollup (Vite) y compilación de TypeScript para el backend (`npx prisma generate && tsc`).
+4.  **Test (Probar):** Ejecución automatizada de pruebas unitarias y de integración en backend (Jest + Supertest) y frontend (Vitest + JSDOM), asegurando una cobertura robusta antes de integrar cambios.
+5.  **Release (Liberar):** Creación de Pull Requests (PR) en GitHub. Enjambre de agentes IA auditan y aprueban cambios hacia la rama de integración `develop` o producción `main` tras validar que el pipeline esté 100% en verde.
+6.  **Deploy (Desplegar):** Despliegue automático gatillado por webhooks desde GitHub Actions hacia Render (Backend de larga duración) y Vercel (Frontend desacoplado).
+7.  **Operate (Operar):** Gestión del tráfico y disponibilidad mediante balanceadores de carga integrados en la nube y configuración de pools de conexiones optimizados en la base de datos Supabase.
+8.  **Monitor (Monitorear):** Captura de métricas, análisis de logs y monitoreo de confiabilidad e infraestructura SRE en caliente mediante scripts automatizados en TypeScript.
 
-#### Backend: Node.js con Express
-La selección de Node.js como motor de ejecución para la API REST del backend se fundamenta en su modelo de concurrencia basado en un **Event Loop de un solo hilo con I/O no bloqueante** (construido sobre la biblioteca de bajo nivel `libuv`). 
+### 1.3 Matriz Tecnológica Justificada
 
-Para una plataforma "tipo Uber" como "Semáforo Social", el backend debe gestionar una alta concurrencia de conexiones simultáneas provenientes de peatones solicitando cruces y trabajadores enviando sus coordenadas de geolocalización en tiempo real. En un servidor tradicional multi-hilo, cada request bloquearía un hilo del sistema operativo esperando la respuesta de la base de datos, lo que escalaría exponencialmente el consumo de memoria. Node.js delega las operaciones de I/O de la base de datos (Supabase) al pool de hilos de `libuv`, permitiendo que el hilo principal siga atendiendo nuevas peticiones con un consumo de recursos sumamente bajo y predecible.
+**Tabla 1**  
+*Justificación Técnica del Stack Tecnológico Seleccionado*  
 
-Express.js se justifica por ser un framework minimalista de alta madurez que ofrece un router y un sistema de middlewares robusto, lo que nos permite implementar un patrón arquitectónico limpio (MVC de Router → Controller → Service → Repository) de forma explícita, y asegurar la API con middlewares estandarizados como `helmet` (para cabeceras HTTP de seguridad), `cors` (para control de orígenes permitidos) y `express-rate-limit` (para mitigar ataques DoS).
+| Componente | Tecnología | Justificación Técnica de Ingeniería |
+| :--- | :--- | :--- |
+| **Frontend** | React 19 + Vite | SPA de alto rendimiento. Virtual DOM para renderizado declarativo y eficiente. Vite ofrece un entorno de desarrollo ultra veloz gracias a ES Modules nativos y bundling óptimo con Rollup para producción. |
+| **Backend** | Node.js + Express | Servidor de larga duración (Long-Running Server) con arquitectura de Event Loop e I/O no bloqueante. Ideal para APIs REST de alta concurrencia como geolocalización, optimizando memoria con pooles de conexiones persistentes. |
+| **ORM** | Prisma | Generación de tipos estáticos en tiempo de compilación. Prevención nativa contra ataques de SQL Injection mediante consultas parametrizadas automatizadas. Migraciones versionadas y schema como única fuente de verdad. |
+| **Base de Datos** | PostgreSQL (Supabase) | Motor relacional con soporte nativo para transacciones ACID, integridad referencial estricta, y control de concurrencia multiversión (MVCC). Supabase actúa como infraestructura PostgreSQL gestionada de alto rendimiento. |
+| **Hosting Cloud** | Render & Vercel | Despliegue desacoplado (Decoupled Architecture). Vercel distribuye el frontend estático a través de una CDN global con latencia mínima y cero errores 404, mientras que Render hospeda el servidor Express persistente. |
+| **Inteligencia Artificial**| Gemini 3.5 Flash | Inferencia y análisis cognitivo veloz de lenguaje natural (NLP) integrado para el chatbot financiero "Sami" y el motor inteligente de parseo de CVs e intermediación laboral. |
 
-#### Base de Datos: PostgreSQL (vía Supabase)
-El modelo de negocio de "Semáforo Social" maneja datos altamente relacionales y transacciones críticas en su capa Fintech (billeteras digitales, pagos por Yape/Plin/NFC, cálculo de comisiones e impuestos NRUS). Estas operaciones exigen garantías **ACID** (Atomicidad, Consistencia, Aislamiento y Durabilidad) estrictas que prevengan fallas como el doble gasto de saldo o la inconsistencia en el historial de transacciones.
+*Nota: Elaboración propia.*
 
-PostgreSQL se justifica por su madurez excepcional, soporte completo de transacciones transaccionales y su capacidad nativa de geolocalización mediante extensiones de indexación espacial (esencial para la búsqueda por proximidad de trabajadores). La base de datos se estructuró bajo la **Tercera Forma Normal (3FN)**, eliminando la redundancia y asegurando la integridad referencial a través de claves foráneas con restricciones estrictas de borrado histórico (`onDelete: Restrict / SetNull`). 
-
-Se utiliza **Supabase** exclusivamente como proveedor gestionado de infraestructura PostgreSQL (eliminando la carga operativa de administración de servidores de base de datos), consumido a través de **Prisma ORM** como la única fuente de verdad para el tipado seguro, prevención nativa de SQL Injection y control versionado de migraciones.
-
-#### Frontend: React con Vite
-El frontend del sistema requiere ofrecer una experiencia fluida de alta velocidad, responsiva y con una interfaz "Ultra-Tech" rica en micro-interacciones móviles. React 19 se justifica como la biblioteca de diseño de interfaces de usuario debido a su paradigma declarativo, su arquitectura basada en componentes funcionales altamente reutilizables y la eficiencia de su Virtual DOM para calcular las actualizaciones mínimas necesarias en el DOM real. Esto permite renderizar dinámicamente elementos de alta interactividad como el mapa en tiempo real de trabajadores y el panel privado del trabajador ("Chambea Ahora!") con cambios de estado instantáneos sin recargar la página completa.
-
-**Vite** se adopta como herramienta de build de nueva generación para reemplazar Webpack. Vite utiliza módulos ES nativos (ESM) en el navegador durante el desarrollo, lo que elimina la necesidad de empaquetar todo el código de antemano y ofrece un arranque del servidor de desarrollo instantáneo y un Hot Module Replacement (HMR) extremadamente rápido. Para la distribución de producción, realiza un bundling altamente optimizado con Rollup que remueve código no utilizado (tree-shaking), minimizando el tamaño del bundle servido al usuario.
+### 1.4 Vínculo con el Problema de Negocio
+La arquitectura propuesta resuelve directamente los desafíos técnicos del sistema de formalización y micro-empleo **"Semáforo Social"**. Al desacoplar completamente la interfaz de usuario de la lógica de procesamiento (Frontend en Vercel, API en Render), garantizamos que un pico de conductores solicitando lavados express no degrade el rendimiento del panel de los trabajadores. De igual manera, el uso de PostgreSQL con transacciones ACID asegura que las operaciones de la billetera digital y split de comisiones se completen con total consistencia, impidiendo la pérdida de dinero y blindando legalmente el registro del sistema frente a menores de edad no autorizados.
 
 ---
 
 ## 2. Diagramas: Casos de Uso y Arquitectura
 
-> 📌 **INSTRUCCIÓN PARA EL AGENTE ARQUITECTO:**  
-> Inyectar el código Mermaid generado en cada bloque vacío a continuación.  
-> Usar el MCP filesystem para leer y actualizar este archivo directamente.  
-> Verificar el renderizado con el MCP Playwright.
+### 2.1 Actores del Sistema
+Los roles que interactúan con la plataforma "Semáforo Social" se definen a continuación:
 
-### 2.1 Diagrama de Casos de Uso
+*   **Trabajador Vial (Limpiador):** Persona nacional o extranjera (DNI, CE, PTP) que vive del día a día, expuesta al sol y accidentes en luz roja, que busca formalizarse, capacitarse y aumentar sus ingresos mediante lavado de lunas rápido y seguro.
+*   **Conductor (Cliente Express):** Persona sin tiempo para ir a un taller formal que busca solicitar un lavado express de lunas rápido de forma segura durante la luz roja del semáforo.
+*   **Fiscalizador Gubernamental (Analista MINTRA / MIMP):** Ente regulador que monitorea las calles en tiempo real mediante el panel de control para erradicar la explotación infantil, auditar autorizaciones de menores de edad (14-17) y fiscalizar las actividades.
+*   **Administrador de Car Wash:** Dueño de taller de lavado formal que utiliza el sistema B2B para reclutar y contratar personal operativo verificado con estatus "Semáforo Verde" e historial de excelente desempeño.
+*   **Analista de RRHH (Otras Empresas):** Reclutador corporativo de retail o call centers que busca buscar y contratar personal operativo utilizando el motor de IA RAG para detectar candidatos con habilidades blandas (tolerancia al estrés, manejo de caja).
 
+### 2.2 Diagrama de Casos de Uso (UML)
 ```mermaid
 graph LR
     subgraph Actores
-        P([👤 Peatón / Usuario])
-        W([👤 Trabajador Vial])
-        A([👤 Administrador])
-        Y([🤖 API Yape / Plin])
-        G([🤖 Pasarela Tap-to-Pay])
+        T([👤 Trabajador Vial])
+        C([👤 Conductor])
+        F([👤 Fiscalizador MINTRA])
+        A([👤 Administrador Car Wash])
+        R([👤 Analista RRHH])
     end
 
-    subgraph Sistema "Asignación Vial & Fintech POS"
-        UC1(Solicitar Cruce Seguro)
-        UC2(Aceptar Solicitud de Cruce)
-        UC3(Iniciar y Completar Cruce)
-        UC4(Pagar Cruce - NFC Tap-to-Pay)
-        UC5(Pagar Cruce - Yape/Plin QR)
-        UC6(Recibir Pago y Split de Comisión)
-        UC7(Consultar Billetera y Saldo)
-        UC8(Gestionar Intersecciones y Tarifas)
+    subgraph Sistema "Semáforo Social"
+        UC1(Solicitar Lavado Express)
+        UC2(Aceptar y Validar Luz Roja)
+        UC3(Registrarse con KYC Legal)
+        UC4(Auditar Trabajo Infantil)
+        UC5(Reclutar Trabajadores)
+        UC6(Búsqueda RAG de Habilidades Blandas)
     end
 
-    P --> UC1
-    P --> UC4
-    P --> UC5
-    W --> UC2
-    W --> UC3
-    W --> UC4
-    W --> UC5
-    W --> UC7
-    A --> UC8
-    A --> UC7
+    C --> UC1
+    T --> UC2
+    T --> UC3
+    F --> UC4
+    A --> UC5
+    R --> UC6
+```
+
+### 2.3 Casos de Uso Extendidos
+
+**Tabla 2**  
+*Especificación de Casos de Uso Críticos*  
+
+| ID | Nombre del Caso | Actor | Descripción | Precondición | Postcondición |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CU-01** | Solicitar Lavado Express | Conductor | Permite solicitar un servicio rápido de lavado en un radio de 200m. | El conductor está detenido en intersección. | El sistema busca trabajadores viales más cercanos. |
+| **CU-02** | Validación Vial en Luz Roja | Trabajador | Activa el inicio del lavado solo si el semáforo vehicular está en Rojo. | Solicitud aceptada por el trabajador. | Se inicia un contador regresivo de 45 segundos de forma segura. |
+| **CU-03** | Búsqueda Semántica RAG | Analista RRHH | Filtra candidatos por habilidades blandas mediante inferencia de IA. | El analista inicia sesión en módulo B2B. | El sistema devuelve recomendaciones justificadas por LLM. |
+
+*Nota: Elaboración propia.*
+
+### 2.4 Arquitectura Lógica
+La aplicación sigue un patrón de **Diseño Multicapa Desacoplado**, estructurado de la siguiente forma:
+
+1.  **Capa de Presentación (Client SPA):** Construida en React 19. Gestiona la interfaz mediante vistas responsivas oscuras/neón, mapa dinámico de geolocalización y llamadas HTTP optimizadas a través de un cliente Axios centralizado con interceptores automáticos para el refresco del token JWT.
+2.  **Capa de Middleware y Enrutamiento (API Gateway/Routes):** Implementada en Express. Encargada de recibir las solicitudes, aplicar cabeceras de seguridad mediante `helmet`, verificar el límite de tasa de solicitudes (`rate-limit`), habilitar orígenes autorizados (`CORS`), y sanear/validar las entradas con `express-validator`.
+3.  **Capa de Controladores (Controllers):** Orquesta el flujo de la solicitud, parsea los parámetros de entrada y formatea las respuestas HTTP de forma unificada bajo la estructura `{ status, data, message, pagination }`.
+4.  **Capa de Servicios (Business Logic - Services):** Contiene las reglas de negocio puras e independientes de la infraestructura (ej. validación legal de edad, cálculo de semáforo, split de comisiones).
+5.  **Capa de Acceso a Datos (Repository / Prisma Client):** Abstrae las consultas SQL crudas mediante sentencias de Prisma parametrizadas con índices en claves foráneas, garantizando la consistencia transaccional y la tipificación de datos.
+
+### 2.5 Arquitectura Física en Nube (SRE Topology)
+```text
+[Cliente: Navegador Web (React SPA)] 
+    -- HTTPS (TLS 1.3) --> [CDN de Vercel (Edge Network)]
+    -- Consumo de API REST --> [Render Web Service (Servidor Express)]
     
-    UC4 -.->|"<<include>>"| UC6
-    UC5 -.->|"<<include>>"| UC6
-    UC6 -.-> G
-    UC6 -.-> Y
+[Render Web Service]
+    -- Conexión Segura Pooler (Puerto 6543) --> [Supabase Cloud (PostgreSQL 15)]
+    -- Inferencia Cognitiva (HTTPS) --> [Google Gemini 3.5 API]
+    
+[GitHub Repository]
+    -- Webhooks automáticos --> [GitHub Actions Runner (CI/CD Pipeline)]
+    -- Auto-deploy en éxito --> [Render & Vercel Deploy Hooks]
 ```
 
-**Descripción:** Representa los actores y casos de uso del sistema. El **Peatón** (Usuario) puede solicitar cruces seguros y pagar la tarifa a través de **NFC Tap-to-Pay** o **Yape/Plin QR**. El **Trabajador Vial** acepta solicitudes de cruce, las ejecuta y actúa como un POS virtual recibiendo los pagos del peatón. El **Administrador** gestiona las intersecciones y consulta balances de comisiones. Las APIs externas de **Yape/Plin** y la **Pasarela Tap-to-Pay** procesan los cargos e interactúan con el motor de split de comisiones (`<<include>>`).
-
-### 2.2 Diagrama de Arquitectura Lógica
-
-```mermaid
-graph TB
-    subgraph "Capa de Presentación — React + Vite"
-        SPA[React SPA]
-        ROUTER[React Router]
-        AXIOS[Axios Client + Interceptores JWT]
-        CAP_PLUG[Capacitor Native NFC Plugin]
-    end
-
-    subgraph "Capa de Aplicación — Node.js + Express"
-        SERVER[Express Server]
-        MW[Middlewares: CORS · Helmet · Rate Limit · Auth · Validation]
-        ROUTES[REST API Routes /api/v1]
-        CTRL[Controllers: PaymentController · ServiceRequestController]
-        SVC[Services: PaymentService · SplitPaymentEngine]
-        REPO[Repositories: Prisma ORM Clients]
-    end
-
-    subgraph "Capa de Datos — PostgreSQL"
-        DB[(PostgreSQL\nSupabase)]
-    end
-
-    SPA --> AXIOS
-    SPA --> CAP_PLUG
-    CAP_PLUG -->|"Card Tokenization"| AXIOS
-    AXIOS -->|"HTTPS REST"| SERVER
-    SERVER --> MW --> ROUTES --> CTRL --> SVC --> REPO
-    REPO -->|"Prisma Query"| DB
-```
-
-**Descripción:** Representa las tres capas del sistema. En la **Capa de Presentación**, el cliente React SPA envía peticiones HTTP seguras vía Axios. Para el pago sin contacto, se integra un plugin nativo de Capacitor que lee la tarjeta NFC y obtiene el token seguro. En la **Capa de Aplicación**, el servidor Express ejecuta middlewares globales de seguridad (CORS, Helmet, Rate Limit, Auth, Validation) y enruta las peticiones hacia controladores, servicios y repositorios. La **Capa de Datos** aloja PostgreSQL gestionado por Supabase, donde Prisma ORM ejecuta transacciones robustas para balances y transferencias.
-
-### 2.3 Diagrama de Arquitectura Física en Nube
-
-```mermaid
-graph TB
-    subgraph Internet
-        USER[🌐 Usuario Final]
-    end
-
-    subgraph "GitHub"
-        REPO[📁 Repositorio PC2-PFDC3]
-        ACTIONS[⚙️ GitHub Actions CI/CD]
-    end
-
-    subgraph "Render Cloud — Backend"
-        BE[🖥️ Node.js Express\nWeb Service]
-    end
-
-    subgraph "Vercel Cloud — Frontend"
-        FE[🌍 React Build\nCDN Global]
-    end
-
-    subgraph "Supabase Cloud — Base de Datos"
-        DB[(🐘 PostgreSQL 15)]
-    end
-
-    USER -->|HTTPS| FE
-    FE -->|REST API HTTPS| BE
-    BE -->|SSL/TLS Port 5432/6543| DB
-    REPO --> ACTIONS
-    ACTIONS -->|Deploy Hook| BE
-    ACTIONS -->|Deploy| FE
-```
-
-**Descripción:** Representa el despliegue físico del sistema en la nube. El **Usuario Final** accede al frontend alojado en la red global de distribución de contenido (CDN) de **Vercel** usando HTTPS. Las solicitudes de la API se dirigen al backend alojado como un servicio web de larga duración en **Render**. El backend de Render se conecta de forma segura mediante SSL/TLS en el puerto 5432 (o 6543 de pooling) a la base de datos PostgreSQL gestionada en **Supabase**. Todo el ciclo de vida está automatizado mediante un pipeline CI/CD en **GitHub Actions** que valida el código y desencadena los deploys en Render y Vercel en cada fusión a las ramas principales.
-
-### 2.4 Modelo Entidad-Relación
-
-```mermaid
-erDiagram
-    User {
-        uuid id PK
-        string email UK
-        string password
-        string name
-        enum role
-        boolean is_active
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    WorkerProfile {
-        uuid id PK
-        uuid user_id FK "UK"
-        boolean is_available
-        double latitude
-        double longitude
-        timestamp updated_at
-    }
-
-    Intersection {
-        uuid id PK
-        string name
-        double latitude
-        double longitude
-        enum light_color
-        timestamp updated_at
-    }
-
-    ServiceRequest {
-        uuid id PK
-        uuid pedestrian_id FK
-        uuid worker_id FK
-        uuid intersection_id FK
-        enum status
-        double start_latitude
-        double start_longitude
-        enum light_color_snapshot
-        boolean is_deleted
-        timestamp created_at
-        timestamp updated_at
-        timestamp assigned_at
-        timestamp started_at
-        timestamp executed_at
-        timestamp completed_at
-        timestamp cancelled_at
-    }
-
-    Wallet {
-        uuid id PK
-        uuid user_id FK "UK"
-        decimal balance
-        string currency
-        enum type
-        boolean is_active
-        boolean is_deleted
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    Transaction {
-        uuid id PK
-        uuid wallet_id FK
-        decimal amount
-        decimal net_amount
-        decimal fee_amount
-        decimal fee_percentage
-        enum payment_method
-        enum status
-        string provider_transaction_id UK
-        string qr_code_url
-        json metadata
-        boolean is_deleted
-        timestamp created_at
-        timestamp updated_at
-    }
-
-    User ||--o| WorkerProfile : "has"
-    User ||--o| Wallet : "owns"
-    User ||--o{ ServiceRequest : "requests as pedestrian"
-    User ||--o{ ServiceRequest : "assists as worker"
-    Intersection ||--o{ ServiceRequest : "belongs to"
-    Wallet ||--o{ Transaction : "records"
-```
-
-### 2.5 Diagrama de Estados del Viaje (ServiceRequest)
-
-El siguiente diagrama de estados representa el ciclo de vida completo de un servicio vial, desde la solicitud inicial del peatón hasta su finalización, garantizando que el cruce solo opere cuando el semáforo vehicular de la intersección esté en rojo.
-
+### 2.6 Diagrama de Estados del Viaje (ServiceRequest)
 ```mermaid
 stateDiagram-v2
-    [*] --> BUSCANDO : Peatón solicita asistencia
-    
-    BUSCANDO --> CANCELADO : Peatón cancela solicitud
-    BUSCANDO --> ASIGNADO : Trabajador disponible acepta servicio
-
-    ASIGNADO --> CANCELADO : Peatón o Trabajador cancela
-    ASIGNADO --> EN_CAMINO : Trabajador inicia traslado a la intersección
-
-    EN_CAMINO --> CANCELADO : Peatón o Trabajador cancela
-    
-    state "EN_EJECUCION" as en_ejecucion
-    note right of en_ejecucion
+    [*] --> LOOKING : Conductor solicita lavado express
+    LOOKING --> ASSIGNED : Trabajador disponible acepta servicio
+    ASSIGNED --> ON_WAY : Trabajador se traslada a la posición del auto
+    state "EXECUTING" as executing
+    note right of executing
         RESTRICCIÓN DE SEGURIDAD:
         Solo se activa si semáforo = ROJO
     end note
-    
-    EN_CAMINO --> en_ejecucion : Trabajador inicia cruce asistido (Valida Semáforo Rojo)
-    
-    en_ejecucion --> FINALIZADO : Cruce terminado exitosamente
+    ON_WAY --> executing : Trabajador inicia lavado (Valida Luz Roja)
+    executing --> COMPLETED : Servicio terminado y pagado
 ```
-
-**Descripción del Ciclo de Vida:**
-1. **BUSCANDO:** El peatón inicia una solicitud ingresando las coordenadas de origen y la intersección. El sistema calcula los asistentes viales más cercanos en tiempo real usando un algoritmo de Haversine optimizado.
-2. **ASIGNADO:** Un asistente vial acepta la solicitud desde su panel. Su estado en `WorkerProfile` pasa a `isAvailable = false`.
-3. **EN_CAMINO:** El asistente vial inicia su marcha hacia el encuentro del peatón.
-4. **EN_EJECUCION:** Para iniciar el cruce de la pista, el backend de la API verifica de forma transaccional y en tiempo real que el semáforo vehicular de la intersección esté en **ROJO** (`RED`). Si se cumple, se autoriza la transición, se toma una instantánea del color del semáforo para fines de auditoría y cumplimiento normativo (`lightColorSnapshot = 'RED'`) y se inicia el cruce.
-5. **FINALIZADO:** El peatón es guiado con seguridad a la otra acera. El asistente vial vuelve a estar disponible (`isAvailable = true`) para recibir nuevas solicitudes de proximidad.
-6. **CANCELADO:** Se permite la cancelación en cualquier momento previo a la fase de ejecución, liberando al asistente vial de forma inmediata.
-
----
-
-**Descripción del Modelo de Datos:** El modelo relacional ha sido diseñado aplicando la **Tercera Forma Normal (3FN)** para garantizar la integridad referencial y eliminar la redundancia de datos.
-1.  **Entidades de Core Vial:** Se modelan `User`, `WorkerProfile`, `Intersection` y `ServiceRequest` para orquestar la asignación en tiempo real y el ciclo de vida del cruce seguro (SLA Tracking).
-2.  **Entidades Fintech:** Se introducen `Wallet` (asociado en relación de 1:1 estricta con `User` para resguardar balances monetarios precisos con el tipo de dato `Decimal` de alta precisión) y `Transaction` (que registra transferencias, comisiones de mantenimiento del 5% e información para idempotencia en pagos por NFC o Yape/Plin).
-3.  **Mejores Prácticas Postgres (Supabase):** Se declaran claves primarias de tipo UUID para escalabilidad y seguridad. Todas las claves foráneas tienen índices `@@index` declarados de forma explícita para evitar sequential scans en PostgreSQL. Se implementa borrado lógico con la bandera `isDeleted` en `ServiceRequest`, `Wallet` y `Transaction` para garantizar la integridad histórica y de auditoría.
 
 ---
 
 ## 3. Planificación con Scrum
 
 ### 3.1 Definición de Terminado (DoD)
-
 Una Historia de Usuario se considera **TERMINADA** cuando:
+1.  **Código Limpio:** Verificación exitosa de ESLint en frontend y backend, sin advertencias críticas.
+2.  **Base de Datos**: Cambios de esquema aplicados mediante migraciones de Prisma (`npx prisma migrate deploy`).
+3.  **Seguridad**: Validaciones de entrada con `express-validator`. Ningún secreto o token expuesto.
+4.  **Pruebas**: Cobertura de pruebas unitarias en verde y paso exitoso del runner de Playwright.
+5.  **Despliegue**: Build exitoso en producción (Render/Vercel) sin errores.
 
-| # | Criterio | Verificación |
-|---|----------|-------------|
-| 1 | Código implementado (backend + frontend) | Code review en PR |
-| 2 | Tests pasando en verde (pipeline CI) | Screenshot GitHub Actions |
-| 3 | Sin errores de lint (ESLint) | `npm run lint` exitoso |
-| 4 | Criterios de aceptación verificados | Demo al Scrum Master |
-| 5 | Endpoint documentado en el código | Comentarios JSDoc |
-| 6 | Desplegado y verificado en staging | URL de staging funcionando |
-| 7 | Story cerrada en Jira | Captura del tablero |
+### 3.2 Sprints de Desarrollo
 
-### 3.2 Sprint Goals
+**Tabla 3**  
+*Épicas de Desarrollo del Sistema Semáforo Social*  
 
-#### Sprint 1 — [01/06] al [14/06]
+| Código Épica | Nombre de la Épica | Descripción Técnica | Prioridad |
+| :--- | :--- | :--- | :--- |
+| **EP-01** | Onboarding y KYC Legal | Autenticación, registro e inyección KYC (DNI, CE, PTP y permiso MINTRA). | Alta (Must) |
+| **EP-02** | Motor On-Demand Geográfico | Búsqueda por coordenadas, geolocalización de cercanía y validación vial. | Alta (Must) |
+| **EP-03** | Ecosistema Fintech & Pagos | Billeteras virtuales, cobros NFC sin contacto, Yape/Plin y split. | Alta (Must) |
 
-**Objetivo:** Desarrollar e implementar la infraestructura técnica fundacional del sistema, incluyendo el modelado relacional en Supabase con Prisma, el flujo robusto de registro de usuarios y trabajadores con validación legal KYC (Documentación y MINTRA para menores), y el núcleo del ecosistema de pagos móviles (NFC y Yape/Plin Split Payment) para garantizar la monetización desde el primer día.
+*Nota: Elaboración propia.*
 
-| Historia / Tarea | Puntos | Estado | Notas |
-| :--- | :---: | :---: | :--- |
-| **US-1.1:** Autenticación y Registro con KYC Legal Peruano | 5 | 🟢 Completado | Validación de DNI, CE y PTP con encriptación bcrypt. |
-| **US-1.2:** Validación de Edad y Carga de Permiso MINTRA | 8 | 🟢 Completado | Control de menores de 14 años y autorización obligatoria de tutores. |
-| **TASK-1.3:** Configurar Base de Datos Supabase y Prisma Schema | 3 | 🟢 Completado | Implementación del esquema en 3FN e indexación de FKs en Postgres. |
-| **TASK-1.4:** Configurar Helmet, CORS y Rate Limit en Express | 2 | 🟢 Completado | Blindaje y mitigación de inyecciones y ataques de denegación de servicio. |
-| **US-3.1:** Pago sin Contacto (Tap-to-Pay NFC) | 8 | 🟢 Completado | Protocolo móvil para cobro con tarjeta sin uso de efectivo. |
-| **US-3.2:** Split Payment automático de Yape/Plin | 5 | 🟢 Completado | Webhook de confirmación de pago y retención de comisión del 5%. |
-| **TASK-3.3:** Diseño de Billetera Virtual y Vista de Transacciones | 3 | 🟢 Completado | Interfaz frontend para el control de saldos y retiros en soles. |
-| **Total** | **34** | | **SLA de Despliegue en producción al 100%** |
+### 3.3 Product Backlog Consolidado e Implementado
 
-#### Sprint 2 — [15/06] al [28/06]
+**Tabla 4**  
+*Product Backlog con Estimación y Criterios de Aceptación*  
 
-**Objetivo:** Desarrollar el motor core de emparejamiento geoespacial en tiempo real (proximidad mediante georreferenciación), implementar el módulo de gamificación del "Semáforo Personal" privado en el apartado "Chambea Ahora!" para incentivar la capacitación, y estructurar el panel gubernamental para el control y fiscalización municipal en calle.
+| ID | Épica | Historia / Tarea de Usuario | Criterios de Aceptación (DoD) | Prioridad | SP | Estado |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **US-1.1** | EP-01 | Como trabajador vial, quiero registrarme en el sistema validando mi documento (DNI, CE, PTP). | Validación de tipo de documento y número único. Creación transaccional del perfil. Retorno de status 201. | Must | 5 | 🟢 Done |
+| **US-1.2** | EP-01 | Como trabajador menor de edad (14-17), quiero que se me exija subir mi permiso del MINTRA. | Bloqueo absoluto de menores de 14 años. Exigencia obligatoria de archivo PDF de autorización de MINTRA. | Must | 8 | 🟢 Done |
+| **US-2.1** | EP-02 | Como conductor, quiero buscar trabajadores activos en un radio de 200 metros del semáforo. | Consulta espacial Haversine indexada en Postgres. Retorno de lista de limpiadores ordenada por cercanía. | Must | 8 | 🟢 Done |
+| **US-2.2** | EP-02 | Como trabajador vial, quiero que el lavado se habilite solo cuando el semáforo esté en rojo. | Validación transaccional de color de semáforo antes de iniciar servicio. Bloqueo en verde para evitar accidentes. | Must | 5 | 🟢 Done |
+| **US-3.1** | EP-03 | Como conductor, quiero pagar el lavado express acercando mi tarjeta al celular del limpiador (NFC). | Integración de POS Virtual NFC en el frontend. Procesamiento seguro de cargo bancario. | Must | 8 | 🟢 Done |
+| **US-3.2** | EP-03 | Como administrador, quiero retener automáticamente el 5% de comisión en cada pago. | Split de pago automático en la billetera virtual. Depósito del 95% al trabajador y 5% a la plataforma. | Must | 5 | 🟢 Done |
 
-| Historia / Tarea | Puntos | Estado | Notas |
-| :--- | :---: | :---: | :--- |
-| **US-2.1:** Búsqueda de Trabajadores por Proximidad | 8 | 🟢 Completado | Consulta Haversine optimizada en base de datos. |
-| **US-2.2:** Control del Ciclo de Vida del Servicio Vial | 5 | 🟢 Completado | Restricción de seguridad que limita la limpieza al semáforo en rojo. |
-| **TASK-2.3:** Integración de Mapas interactivos en el Frontend | 3 | 🟢 Completado | Renderizado de marcadores dinámicos y geolocalización de pines. |
-| **US-4.1:** Algoritmo de Reputación y Progreso del Semáforo | 3 | 🟢 Completado | Incremento dinámico de nivel en base a cursos y finanzas. |
-| **US-4.2:** Panel de Fiscalización y Control Municipal | 5 | 🟢 Completado | Consolidado de ganancias, permisos de calle y georreferenciación. |
-| **TASK-4.3:** Exportación de Reportes PDF/Excel para Municipios | 2 | 🟢 Completado | Generación de históricos mensuales de control fiscal en avenidas. |
-| **Total** | **26** | | **Integración de Componentes MVP al 100%** |
-
-### 3.3 Backlog del Producto
-
-A continuación, se detalla el Backlog del Producto priorizado e implementado en el sistema, estructurado en base a las Épicas del proyecto y alineado con los requerimientos técnicos:
-
-| ID | Título de la Historia / Tarea | Épica | Puntos | Prioridad | Sprint | Etiquetas |
-|---|---|---|---|---|---|---|
-| **US-1.1** | Autenticación y Registro con KYC Legal Peruano | E-1 | 5 | Highest | 1 | `legaltech`, `backend`, `base-de-datos`, `MVP` |
-| **US-1.2** | Validación de Edad y Carga de Permiso MINTRA | E-1 | 8 | Highest | 1 | `legaltech`, `backend`, `frontend`, `MVP` |
-| **TASK-1.3**| Configurar Base de Datos Supabase y Prisma Schema | E-1 | 3 | High | 1 | `base-de-datos`, `backend` |
-| **TASK-1.4**| Configurar Helmet, CORS y Rate Limit en Express | E-1 | 2 | High | 1 | `seguridad`, `backend` |
-| **US-2.1** | Búsqueda de Trabajadores por Proximidad | E-2 | 8 | High | 2 | `backend`, `geomática`, `base-de-datos` |
-| **US-2.2** | Control del Ciclo de Vida del Servicio Vial | E-2 | 5 | High | 2 | `backend`, `frontend` |
-| **TASK-2.3**| Integración de Mapas interactivos en el Frontend | E-2 | 3 | Medium | 2 | `frontend`, `mapas` |
-| **US-3.1** | Pago sin Contacto (Tap-to-Pay NFC) | E-3 | 8 | High | 1 | `fintech`, `backend`, `frontend`, `MVP` |
-| **US-3.2** | Split Payment automático de Yape/Plin | E-3 | 5 | High | 1 | `fintech`, `backend`, `base-de-datos`, `MVP` |
-| **TASK-3.3**| Diseño de Billetera Virtual y Vista de Transacciones | E-3 | 3 | Medium | 1 | `frontend`, `fintech` |
-| **US-4.1** | Algoritmo de Reputación y Progreso del Semáforo | E-4 | 3 | Medium | 2 | `gamificacion`, `backend`, `frontend` |
-| **US-4.2** | Panel de Fiscalización y Control Municipal | E-4 | 5 | Medium | 2 | `admin`, `backend`, `frontend`, `reportes` |
-| **TASK-4.3**| Exportación de Reportes PDF/Excel para Municipios | E-4 | 2 | Low | 2 | `backend`, `reportes` |
-| **US-5.1** | Notificaciones Push de Asignación en Tiempo Real | E-5 | 5 | Low | Backlog | `backlog`, `frontend`, `backend` |
-| **US-5.2** | Perfil con Generación de CV Formal por IA | E-5 | 5 | Low | Backlog | `backlog`, `inteligencia-artificial`, `backend` |
-| **TASK-5.3**| Pruebas de Carga y Optimización de Índices DB | E-5 | 3 | Low | Backlog | `backlog`, `base-de-datos`, `performance` |
-
-### 3.4 Ceremonias Scrum Realizadas
-
-| Ceremonia | Fecha | Duración | Evidencia / Resultado Clave |
-|-----------|-------|----------|-----------|
-| **Sprint Planning S1** | 01/06/2026 | 2h | Backlog del Sprint 1 priorizado y asignado en Jira con 34 SP acordados. |
-| **Daily Standup (S1-D3)**| 04/06/2026 | 15min | Integración del schema Prisma finalizada; se inicia desarrollo de registro con KYC. |
-| **Daily Standup (S1-D8)**| 09/06/2026 | 15min | Webhooks de Yape/Plin validados localmente; se inicia la lógica de NFC en frontend. |
-| **Sprint Review S1** | 14/06/2026 | 1h | Demo funcional del registro con validación MINTRA y transacciones simuladas por NFC. |
-| **Sprint Retrospective S1**| 14/06/2026 | 45min | Foco en mejorar el manejo de dependencias de tipos de TypeScript en el build. |
-| **Sprint Planning S2** | 15/06/2026 | 2h | Planificación de tareas de geolocalización Haversine y gamificación del semáforo. |
-| **Daily Standup (S2-D4)**| 18/06/2026 | 15min | Motor de geolocalización respondiendo en < 5ms; inicio de componentes visuales neón. |
-| **Sprint Review S2** | 28/06/2026 | 1.5h | Demostración final del enjambre. Verificación exitosa de los componentes React 19. |
-
-### 3.5 Capturas del Tablero Jira
-
-> 📌 **INSTRUCCIÓN:** El Agente DevOps debe tomar screenshots del tablero Jira usando el MCP Playwright y guardarlos en `docs/screenshots/`.
-
-**Tablero Kanban/Scrum:**  
-[Insertar captura — `docs/screenshots/04-jira-board.png`]
-
-**Backlog priorizado en Jira:**  
-[Insertar captura del backlog]
+*Nota: Elaboración propia.*
 
 ---
 
-## 4. Implementación y Despliegue en Nube
+## 4. Ingeniería de Datos, Implementación y Despliegue
 
-### 4.1 Modelo Entidad-Relación y Schema de Base de Datos
+### 4.1 Justificación de Base de Datos
+Se selecciona **PostgreSQL** sobre NoSQL (como MongoDB) para "Semáforo Social" debido a:
+*   **Consistencia Transaccional (ACID):** Las operaciones de billeteras virtuales (baleance, retiro, split de comisiones) no permiten estados parciales o inconsistencias de lectura.
+*   **Integridad Referencial Estricta:** Las llaves foráneas con restricciones estrictas de cascada impiden la existencia de transacciones huérfanas o servicios asignados a usuarios inexistentes.
 
-El esquema de base de datos ha sido diseñado para cumplir con los estándares de ingeniería y SRE más exigentes, alineados con el Postgres Best Practices de Supabase (2026):
+### 4.2 Diccionario de Datos
 
-1. **Normalización en 3FN:** Las entidades de negocio fundamentales (`User`, `WorkerProfile`, `Intersection`, `ServiceRequest`) se encuentran desacopladas para garantizar que cada tabla represente una única entidad lógica, eliminando redundancias de almacenamiento y evitando anomalías de actualización.
-2. **Índices Geoespaciales y de Búsqueda:** Para el motor de asignación por proximidad, se ha indexado de forma explícita la tupla `(latitude, longitude)` en la tabla `WorkerProfile` e `Intersection`. Esto nos permite realizar consultas espaciales basadas en la fórmula de Haversine con un pre-filtro de *Bounding Box*, reduciendo la complejidad del motor de $O(N)$ a un rango acotado $O(\log N)$ sumamente ágil.
-3. **Optimización de Claves Foráneas (SRE):** PostgreSQL no indexa automáticamente las llaves foráneas. Para evitar sequential scans masivos y costosos, se han declarado índices explícitos `@@index` para las relaciones en `ServiceRequest` (`pedestrianId`, `workerId`, `intersectionId`).
-4. **Resguardo de Historial Operativo (Soft Delete):** Se implementa borrado lógico con la bandera `isDeleted` en `ServiceRequest` para no perder métricas críticas de auditoría e integridad histórica de los servicios realizados.
-5. **Configuración de Connection Pooling:** El backend Express utiliza el pooler de Supabase (Supavisor) a través del puerto `6543` en modo transacción (`?pgbouncer=true`), previniendo el agotamiento del pool de conexiones del servidor de base de datos.
+**Tabla 5**  
+*Estructura de la Tabla "users" (PostgreSQL)*  
 
-**Schema de Prisma:** [Ver `/backend/prisma/schema.prisma`](../backend/prisma/schema.prisma)
+| Nombre Columna | Tipo de Datos | Restricción / Indexación | Descripción Técnica |
+| :--- | :--- | :--- | :--- |
+| `id` | UUID | PRIMARY KEY, DEFAULT gen_random_uuid() | Identificador único del usuario de la plataforma. |
+| `email` | VARCHAR(255) | UNIQUE, NOT NULL, INDEX | Correo electrónico para autenticación. |
+| `password` | VARCHAR(255) | NOT NULL | Contraseña hash cifrada mediante bcrypt. |
+| `role` | Role (ENUM) | NOT NULL, DEFAULT 'USER' | Rol de control de acceso basado en roles (USER, WORKER, MUNICIPAL_ADMIN). |
+| `documentType`| DocType (ENUM)| NOT NULL | Tipo de documento de identidad (DNI, CE, PTP). |
+| `birthDate` | TIMESTAMP | NOT NULL | Fecha de nacimiento para validaciones KYC de edad. |
+| `createdAt` | TIMESTAMP | DEFAULT NOW(), NOT NULL | Fecha de creación del registro. |
 
-**Migraciones aplicadas:**
-```bash
-npx prisma migrate dev --name [nombre]   # Desarrollo
-npx prisma migrate deploy                 # Producción
-```
+*Nota: Elaboración propia.*
 
-### 4.2 Estrategia de Branching
+### 4.3 Módulo de Inteligencia Artificial (IA) y NLP
+Se ha integrado el motor cognitivo **Gemini 3.5 Flash** en el backend de Node.js, implementando tres flujos estratégicos:
 
-```
-main           ← Producción (protegida, requiere PR aprobado)
-  └── develop  ← Staging (integración continua)
-        ├── feature/autenticacion-jwt
-        ├── feature/gestion-[entidad-1]
-        └── feature/gestion-[entidad-2]
-```
-
-### 4.3 URLs del Sistema en Producción
-
-| Componente | URL | Estado |
-|------------|-----|--------|
-| **Backend API** | `https://[nombre-app].onrender.com` | 🟢 Activo |
-| **Frontend** | `https://[nombre-app].vercel.app` | 🟢 Activo |
-| **Health Check** | `https://[nombre-app].onrender.com/api/health` | 🟢 200 OK |
-
-**Captura del frontend en producción:**  
-[Insertar — `docs/screenshots/01-frontend-deployed.png`]
-
-**Captura del health check de la API:**  
-[Insertar — `docs/screenshots/02-api-health.png`]
-
-### 4.4 Pipeline CI/CD
-
-**Archivo:** [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)
-
-**Stages del pipeline:**
-1. ✅ Checkout del código
-2. ✅ Setup Node.js 20
-3. ✅ `npm ci` (backend + frontend)
-4. ✅ `npm run lint` (backend + frontend)
-5. ✅ `npm test` (backend)
-6. ✅ `npm run build` (frontend)
-7. 🚀 Deploy a Render (push a `main`)
-8. 🚀 Deploy a Vercel (push a `main`)
-
-**Captura del pipeline en verde:**  
-[Insertar — `docs/screenshots/03-github-actions-green.png`]
-
-### 4.5 Configuración de Variables de Entorno en Producción
-
-Variables configuradas en Render (sin valores reales):
-
-| Variable | Descripción |
-|----------|-------------|
-| `NODE_ENV` | `production` |
-| `DATABASE_URL` | Cadena de conexión PostgreSQL Supabase |
-| `JWT_SECRET` | Secreto de 64 bytes para firma JWT |
-| `FRONTEND_URL` | URL del frontend en Vercel |
-| `PORT` | Configurado automáticamente por Render |
-
-### 4.6 Módulo de Inteligencia Artificial (IA) y Procesamiento de Lenguaje Natural (NLP)
-
-Para resolver de manera estratégica la brecha de inclusión laboral, se ha diseñado e implementado una arquitectura cognitiva avanzada impulsada por **Google Gemini 3.5 Flash** e integrada de forma nativa en el backend Express y la base de datos PostgreSQL (Supabase).
-
-El módulo consta de tres componentes clave con propósitos específicos:
-
-#### 4.6.1 Motor de Parseo de CVs Informales a Perfiles Estructurados
-
-La mayoría de los trabajadores en el sector operativo cuenta únicamente con historiales de trabajo informal y un vocabulario alejado de los estándares corporativos. El Motor NLP de Parseo de CVs resuelve esto:
-
-*   **Flujo del Pipeline:**
-    1.  **Ingesta:** El candidato describe su experiencia previa de forma coloquial e informal en una caja de texto del frontend.
-    2.  **Inferencia Estructurada:** El backend envía el texto crudo a Gemini 3.5 Flash solicitando un formato estricto JSON mediante `responseMimeType: 'application/json'` y una estructura tipada.
-    3.  **Traducción de Taxonomía:** La IA estandariza los cargos informales (ej: "ayudante de combi" -> "Asistente de Recaudación y Caja Chica", "limpieza de casas" -> "Auxiliar de Operaciones y Mantenimiento") y extrae habilidades clave, redactando un resumen profesional pulido.
-    4.  **Persistencia Transaccional (ACID):** El servicio procesa el JSON recibido en una transacción de base de datos (`prisma.$transaction`), asegurando que:
-        *   Las habilidades nuevas se creen en la tabla maestra `skills`.
-        *   Se inserte/actualice la tabla `candidate_profiles`.
-        *   Se vinculen los registros relacionales en la tabla puente `candidate_skills`.
-
-*   **JSON Schema Utilizado para la Inferencia:**
-    ```json
-    {
-      "type": "object",
-      "properties": {
-        "formalTitle": { "type": "string" },
-        "summary": { "type": "string" },
-        "location": { "type": "string" },
-        "skills": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string" },
-              "category": { "type": "string", "enum": ["Operativo", "Ventas", "Atención al Cliente", "Logística", "Administrativo"] }
-            },
-            "required": ["name", "category"]
-          }
-        },
-        "experiences": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "rawInformalText": { "type": "string" },
-              "formalRole": { "type": "string" },
-              "duration": { "type": "string" },
-              "formalResponsibilities": { "type": "array", "items": { "type": "string" } }
-            },
-            "required": ["rawInformalText", "formalRole", "duration", "formalResponsibilities"]
-          }
-        }
-      },
-      "required": ["formalTitle", "summary", "skills", "experiences"]
-    }
-    ```
-
-#### 4.6.2 Chatbot Financiero "Fito, tu Coach de Confianza" (Portal del Trabajador)
-
-Tiene como propósito educar e incentivar la inclusión financiera del candidato. Su personalidad, vocabulario y reglas inmutables de Prompt Engineering residen en el backend:
-
-*   **Tono y Personalidad:** Empático, cercano, paciente, utilizando modismos y términos peruanos ("platita", "ahorrito", "dar una mano", "Yapear") para disolver la barrera de timidez tecnológica.
-*   **Formato de Educación en Micro-Cápsulas:** Respuestas ultra-cortas (máx. 150 palabras) en pasos numerados simples (máx. 4 pasos) para facilitar el aprendizaje en pantallas móviles.
-*   **Persistencia de Conversación:** El backend crea una `ChatSession` vinculada al `User` de tipo `CANDIDATE_COACH` y recupera el historial de chat persistido en `ChatMessage` en cada iteración para garantizar un hilo continuo y contextual de conversación multi-ronda.
-
-#### 4.6.3 Chatbot de Reclutamiento "Ramiro, tu Asesor de Selección" (Portal del Reclutador - RAG)
-
-Diseñado para ayudar al empleador a buscar personal calificado en base a lenguaje conversacional natural y evaluar candidatos directamente de la base de datos PostgreSQL.
-
-*   **Arquitectura RAG (Retrieval-Augmented Generation):**
-    1.  **Retrieval (Recuperación):** Cuando el empleador solicita personal (ej. *"Busco operarios para car wash con experiencia en Breña"*), el Express Backend ejecuta consultas SQL semánticas a la base de datos para recuperar perfiles de candidatos reales con sus distritos, experiencia formal e informal y habilidades asociadas.
-    2.  **Augmentation (Aumentación):** La lista de candidatos recuperados se serializa en una estructura JSON contextual.
-    3.  **Generation (Generación):** Se inyecta la consulta del reclutador, el historial de mensajes de la sesión `EMPLOYER_MATCHER` y los candidatos reales recuperados dentro del *System Prompt* de Ramiro. El LLM calcula de forma transparente la compatibilidad (Match %), justifica su elección vinculando experiencia informal a necesidades formales y redacta 2 preguntas clave personalizadas de entrevista para cada candidato sugerido.
+1.  **Sami, el Coach Financiero:** Chatbot en el portal del trabajador que enseña micro-cápsulas de bancarización y finanzas en base a un system prompt empático en español peruano, manteniendo el historial conversacional persistido.
+2.  **Motor de Parseo de CVs:** Extrae la experiencia laboral informal escrita de forma coloquial por el limpiador y la traduce a un formato JSON estructurado y formalizado (usando tipos estrictos) para conectarlos con empresas aliadas.
+3.  **Ramiro, el Reclutador B2B (RAG):** Permite a los analistas de RRHH buscar de forma semántica perfiles viales. El backend recupera los datos desde Supabase, inyecta el JSON en el prompt del modelo y Gemini calcula el Match % e imprime preguntas personalizadas de entrevista para cada candidato.
 
 ---
 
-## 5. Diseño UX/UI & Gamificación — El Semáforo Personal (Chambea Ahora!)
+## 5. Pruebas de Interfaz Automatizadas (QA E2E - Playwright)
 
-Esta sección detalla el diseño de la experiencia del usuario (UX), los lineamientos de la interfaz visual (UI) y el sistema de reputación/gamificación diseñado bajo un enfoque de superación personal e inclusión financiera para trabajadores de servicios rápidos.
+Se implementó una suite de pruebas automatizadas E2E utilizando **Playwright con TypeScript** que valida el flujo y las lógicas del sistema mediante contratos de interfaz basados en `data-testid`:
 
-### 5.1 Filosofía y Separación de Responsabilidades: Semáforo vs. Reputación Pública
+### 5.1 Catálogo de Contratos de Interfaz (`data-testid`)
 
-Con el fin de evitar sesgos discriminatorios hacia los trabajadores de reciente incorporación y fomentar un circuito virtuoso de crecimiento, el sistema se divide en dos capas de reputación:
+**Tabla 6**  
+*Selectores de Interfaz para Pruebas Automatizadas*  
 
-1. **El Semáforo Personal (Meta Interna y Privada - "Chambea Ahora!"):** Es un indicador de progreso privado visible **únicamente** para el trabajador en su sección de capacitación y finanzas. Funciona como un "Personal Growth Loop" en base a sus capacitaciones, salud financiera y validaciones legales. No es visible para clientes.
-2. **La Calificación Pública (Estrellitas de 1 a 5):** Es un indicador público y visible para todos los clientes en el catálogo de búsqueda. Representa la valoración directa del cliente final respecto a la calidad del servicio, la puntualidad y el buen trato del trabajador.
+| Componente | Selector `data-testid` | Tipo de Elemento | Comportamiento Esperado |
+| :--- | :--- | :--- | :--- |
+| **KYC** | `input-birthdate` | `<input type="date">` | Entrada para la fecha de nacimiento del usuario. |
+| **KYC** | `upload-mintra-pdf` | `<input type="file">` | Área para cargar el PDF de autorización de MINTRA para menores de edad. |
+| **Fintech** | `wallet-balance` | `<span>` | Contenedor que renderiza dinámicamente el saldo en soles del trabajador. |
+| **Radar** | `btn-accept-service` | `<button>` | Acción de aceptación de servicio. Bloqueado si el semáforo está en verde. |
 
----
-
-### 5.2 Lógica de Cálculo del Semáforo Personal
-
-El Semáforo se alimenta de un algoritmo de puntuación acumulativa de 0 a 100 puntos, estructurado en tres pilares estratégicos:
-
-$$\text{Puntaje Total} = ID_{\text{verif}} + Ant_{\text{ok}} + Dom_{\text{verif}} + Cap_{\text{fin1}} + Cap_{\text{fin2}} + Cap_{\text{tec}} + Reg_{\text{fin}} + Met_{\text{ahorro}} + Hist_{\text{credit}}$$
-
-#### A. Pilar Legal y Validación de Identidad (Peso: 30% — Máx 30 puntos)
-Otorga el marco de confianza inicial de que el trabajador cumple con los requisitos mínimos de identidad y seguridad.
-* **Identidad Verificada ($ID_{\text{verif}}$ - 12 pts):** Carga correcta de DNI (anverso/reverso) y autenticación facial biométrica en tiempo real.
-* **Antecedentes Verificados ($Ant_{\text{ok}}$ - 12 pts):** Validación en línea o declaración jurada de no contar con antecedentes policiales o judiciales.
-* **Domicilio Verificado ($Dom_{\text{verif}}$ - 6 pts):** Carga de recibo de servicios de agua/luz o verificación por georreferenciación residencial.
-
-#### B. Pilar de Capacitación y Aprendizaje (Peso: 40% — Máx 40 puntos)
-Premia activamente el tiempo invertido en la adquisición de competencias clave.
-* **Curso de Finanzas Personales Básico ($Cap_{\text{fin1}}$ - 12 pts):** Ahorro, armado de presupuestos y control de gastos hormiga.
-* **Curso de Crédito Responsable ($Cap_{\text{fin2}}$ - 12 pts):** Manejo de deudas, tasas de interés y construcción de récord crediticio.
-* **Cursos Técnicos de Especialidad ($Cap_{\text{tec}}$ - 16 pts en total):**
-  * Curso de Seguridad y Salud en el Trabajo (8 pts).
-  * Curso de Atención al Cliente e Imagen Profesional (8 pts).
-
-#### C. Pilar de Hábitos y Salud Financiera (Peso: 30% — Máx 30 puntos)
-Valora el uso de la aplicación como una herramienta de formalización diaria.
-* **Registro de Flujo de Caja Activo ($Reg_{\text{fin}}$ - 10 pts):** Registro de al menos 3 transacciones de ingresos/gastos por semana durante 4 semanas consecutivas.
-* **Cumplimiento de Metas de Ahorro ($Met_{\text{ahorro}}$ - 10 pts):** Mantener activa una meta de ahorro mensual con depósitos periódicos.
-* **Historial de Pago Limpio ($Hist_{\text{credit}}$ - 10 pts):** Cancelación en fecha de micro-créditos asignados o récord impecable en la plataforma.
-
-#### Rango de Colores y Beneficios Desbloqueados
-
-| Color | Rango | Nivel de Progreso | Beneficios e Incentivos de Gamificación |
-| :---: | :---: | :--- | :--- |
-| **🔴 Rojo** | 0 a 39 pts | **Reciente / Perfil Básico** | Acceso a trabajos de tarifa base. Notificaciones de invitación a capacitaciones. |
-| **🟡 Amarillo** | 40 a 74 pts | **Verificado / Capacitándose** | Prioridad media en algoritmo de búsqueda. Desbloqueo de micro-créditos a tasas estándar. Insignia interna "Estudiante Activo". |
-| **🟢 Verde** | 75 a 100 pts | **Confiable / Formalizado** | Prioridad VIP en emparejamiento. Acceso a micro-seguros y micro-créditos con tasa preferencial (4.5%). Curso técnico premium gratis. |
+*Nota: Elaboración propia.*
 
 ---
 
-### 5.3 Sistema de Reputación Público (Calificación de 1 a 5 Estrellas)
+### 5.2 Resultados del Descubrimiento de Pruebas locales
+Al ejecutar `npx playwright test --list` en el entorno local, se verifica que todos los contratos y scripts `.spec.ts` están listos y compilan correctamente:
 
-La reputación pública se construye a partir del promedio ponderado móvil de las valoraciones de los clientes al culminar una orden de servicio.
-
-#### Mecánica de Puntuación
-Al finalizar el servicio, el cliente califica al trabajador con:
-1. **Puntaje numérico:** De 1.0 a 5.0 estrellas doradas.
-2. **Etiquetas de desempeño:** Selección rápida de etiquetas positivas (p. ej., "Puntual", "Amable", "Trabajo Pulcro") o negativas (p. ej., "Llegó Tarde", "Falta Herramienta").
-3. **Comentarios de Reseña (Opcional):** Texto libre con límite de 300 caracteres.
-
-#### Algoritmo de Atenuación de Antigüedad (Decay Rate)
-Para que las opiniones reflejen fielmente el desempeño actual, las calificaciones recientes pesan más que las antiguas (calculando las últimas 50 evaluaciones):
-
-$$\text{Reputación Pública (R)} = \frac{\sum_{i=1}^{N} (P_i \times w_i)}{\sum_{i=1}^{N} w_i}$$
-
-Donde:
-* $P_i$ es el puntaje de estrellas de la calificación $i$.
-* $w_i$ es el peso del tiempo de la calificación:
-  * Últimos 30 días: $w_i = 1.0$
-  * De 31 a 180 días: $w_i = 0.7$
-  * Más de 180 días: $w_i = 0.4$
-
-#### Transparencia y Protección (Antifraude)
-* **Vinculación Transaccional Única:** Solo los clientes con transacciones pagadas y finalizadas pueden calificar, impidiendo campañas de desprestigio o inflación artificial de estrellas.
-* **Derecho a Réplica:** El trabajador tiene el derecho de responder de forma pública a cualquier reseña menor o igual a 3 estrellas, garantizando equidad comercial.
-
----
-
-### 5.4 Lineamientos Visuales "Ultra-Tech" (Tailwind CSS)
-
-La app adopta la estética **"Digital Neon Glass"**: fondos oscuros de alta profundidad, capas flotantes de cristal esmerilado translúcido (*glassmorphism*) y contrastes de acentos en neón de alta saturación para las micro-interacciones.
-
-#### A. Paleta de Colores de Interfaz (Tailwind Extensión)
-* **Fondos Profundos:** `bg-[#020617]` (Slate 950) y `bg-[#0f172a]` (Slate 900) para tarjetas principales.
-* **Acentos Neón:**
-  * Primario / Info / Links: `text-[#06b6d4]` (Cyan 500)
-  * Educación / Progreso: `text-[#8b5cf6]` (Purple 500)
-  * Estrellas de Reputación: `text-[#fbbf24]` (Amber 400)
-* **Colores del Semáforo:**
-  * Verde: `text-[#10b981]` (Emerald 500)
-  * Amarillo: `text-[#f59e0b]` (Amber 500)
-  * Rojo: `text-[#ef4444]` (Red 500)
-
-#### B. Componentes Glassmorphism Sólidos
-Para crear contenedores con aspecto de cristal biselado flotante:
-```html
-<div class="bg-[#0f172a]/45 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.50)]">
-  <!-- Contenido -->
-</div>
-```
-
-#### C. Micro-interacciones y Efectos Glow (Brillo)
-* **Botón de Acción Primario Flotante:**
-  `bg-[#06b6d4] text-[#020617] font-semibold px-6 py-3 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] active:scale-[0.97] transition-all duration-200`
-* **Pulsador de Alerta de Semáforo (Breathing Light):**
-  ```html
-  <div class="relative flex h-3.5 w-3.5">
-    <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981]/40 opacity-75"></div>
-    <div class="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#10b981] shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-  </div>
-  ```
-
----
-
-### 5.5 Wireframes Descriptivos de las Pantallas Principales
-
-#### Pantalla 1: Mapa de Usuario (Home / Búsqueda para Clientes y Trabajadores)
-Geolocalización en tiempo real de la oferta de servicios rápidos. Emplea un mapa en tonos grises/oscuros con acentos dorados para el promedio de estrellas. El semáforo es interno y por ende invisible aquí.
-
-```
-+---------------------------------------------------------------------------------+
-|  [🔍 Buscar electricista, gasfitero...]                       [⚙️ FILTROS]      |
-+---------------------------------------------------------------------------------+
-|                                                                                 |
-|                      📍 [Electricista • ⭐ 4.9]                                  |
-|                                                                                 |
-|                                                                                 |
-|                                                                                 |
-|         📍 [Plomero • ⭐ 4.7]                                                    |
-|                                                                                 |
-|                                                                                 |
-|                                👤 TÚ (📍 Miraflores, Lima)                      |
-|                                                                                 |
-|                                                                                 |
-|                                                     📍 [Carpintero • ⭐ 4.5]     |
-|                                                                                 |
-+---------------------------------------------------------------------------------+
-|  PANEL DETALLADO (Deslizar hacia arriba ↑ - Glassmorphism)                      |
-|                                                                                 |
-|  +---------------------------------------------------------------------------+  |
-|  |  👤 Pedro Gómez • Electricista Certificado                                |  |
-|  |  ⭐ 4.9 (42 Recomendaciones)  •  📍 A 150m de distancia (Tiempo: 3 min)     |  |
-|  |  ───────────────────────────────────────────────────────────────────────  |  |
-|  |  [ Ver Perfil Público ]                                [ ⚡ Contratar Ahora ]  |  |
-|  +---------------------------------------------------------------------------+  |
-|                                                                                 |
-|  🏠 Mapa             💼 Chambea Ahora! (Panel Interno)          👤 Mi Perfil    |
-+---------------------------------------------------------------------------------+
-```
-
-#### Pantalla 2: Panel Interno "Chambea Ahora!" (Dashboard de Capacitación y Metas)
-Sección privada de capacitación y control de metas de superación del trabajador. Es el centro operativo de la gamificación.
-
-```
-+---------------------------------------------------------------------------------+
-|  [⬅️ Volver]                          CHAMBEA AHORA!             [📈 MI REPORTE]  |
-+---------------------------------------------------------------------------------+
-|  ¡Hola, Pedro! Sigue capacitándote para desbloquear mejores herramientas.       |
-|                                                                                 |
-|  +---------------------------------------------------------------------------+  |
-|  |  🚦 TU SEMÁFORO DE METAS: 🟢 [CONFIABLE / FORMALIZADO]                    |  |
-|  |  Tu Puntaje: 82 / 100 puntos                                              |  |
-|  |  [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██████] 82% |  |
-|  |  • ¡Felicidades! Estás en nivel Verde. Beneficios premium activos.        |  |
-|  +---------------------------------------------------------------------------+  |
-|                                                                                 |
-|  📊 DETALLE DE TUS METAS PERSONALES:                                            |
-|  +───────────────────────────────┬────────────────────────────┬──────────────+  |
-|  |  💼 Validación Legal: 30/30   |  🎓 Capacitaciones: 36/40  |  💰 Finanzas |  |
-|  |  [ Completado ✅ ]            |  [ Pendiente: 1 curso ]    |  16/30       |  |
-|  +───────────────────────────────┴────────────────────────────┴──────────────+  |
-|                                                                                 |
-|  🎓 MIS CURSOS DE CAPACITACIÓN:                                                 |
-|  +---------------------------------------------------------------------------+  |
-|  |  📘 Finanzas Personales 2: Inversión y Presupuesto        [▶️ RETOMAR CURSO]  |
-|  |  • Progreso: 75% completado (Faltan 2 módulos)                            |  |
-|  +---------------------------------------------------------------------------+  |
-|  |  ⚡ Técnicas de Plomería Avanzada                         [🔓 DESBLOQUEADO] |  |
-|  |  • Curso gratuito por tu buen nivel de semáforo                           |  |
-|  +---------------------------------------------------------------------------+  |
-|                                                                                 |
-|  💰 SALUD FINANCIERA Y CRÉDITO:                                                 |
-|  +---------------------------------------------------------------------------+  |
-|  |  🏦 Mi Récord de Ahorro: [ $120.00 ahorrados de una meta de $200.00 ]     |  |
-|  |  💳 Tasa de Micro-crédito Desbloqueada: 4.5% (Tasa Preferencial Verde)     |  |
-|  +---------------------------------------------------------------------------+  |
-|                                                                                 |
-|  🏠 Mapa             💼 Chambea Ahora! (Panel Interno)          👤 Mi Perfil    |
-+---------------------------------------------------------------------------------+
+```text
+Listing tests:
+  [chromium] › fintech.spec.ts:9:7 › Fintech Wallet & Educational Feature Gating › Caso A: Bloqueo de billetera por falta de curso de educación financiera
+  [chromium] › fintech.spec.ts:36:7 › Fintech Wallet & Educational Feature Gating › Caso B: Cobro exitoso por Yape QR con actualización dinámica de saldo
+  [chromium] › onboarding.spec.ts:9:7 › Onboarding KYC & Legal Validation › Caso A: Bloqueo estricto para menores de 14 años
+  [chromium] › onboarding.spec.ts:27:7 › Onboarding KYC & Legal Validation › Caso B: Habilitar flujo con permiso MINTRA para adolescentes (14-17 años)
+  [chromium] › radar.spec.ts:8:7 › Radar & On-Demand Service Assignment › Caso A: Bloqueo de aceptación de servicio cuando el semáforo está en VERDE
+  [chromium] › radar.spec.ts:57:7 › Radar & On-Demand Service Assignment › Caso B: Aceptación exitosa de servicio cuando el semáforo está en ROJO
+Total: 6 tests in 3 files
 ```
 
 ---
 
-## 6. Pruebas de Interfaz Automatizadas (QA E2E - Playwright)
+## 6. Conclusiones y Escalabilidad
 
-En alineación con la metodología TDD (Test-Driven Development) y las directivas del rol SDET (Software Development Engineer in Test), se ha desarrollado la batería de pruebas de extremo a extremo (E2E) para definir los contratos de interfaz antes del diseño de la UI. 
+### 6.1 Logros Técnicos del Proyecto
+Se implementó con éxito una arquitectura Full-Stack robusta, segura y desacoplada que asegura la escalabilidad de "Semáforo Social". Se sincronizó un entorno ágil con Scrum asignando todo el backlog al usuario en Jira Cloud, respaldado por un pipeline de automatización CI/CD y un script de validación local pre-commit en TypeScript que reduce la intervención humana a cero, garantizando que todo cambio de software sea estable por diseño.
 
-### 6.1 Contratos de Interfaz (`data-testid`)
-Para garantizar la inmunidad ante refactorizaciones estéticas y de texto en el frontend, se establecen los siguientes identificadores fijos:
+### 6.2 Honestidad Técnica y Limitaciones
+Dadas las restricciones de tiempo inherentes a un examen presencial de 5 horas, se reconocen los siguientes alcances simulados:
+*   **Simulaciones de Interfaces Físicas (NFC):** La lectura de tarjetas vía chip NFC fue emulada en el cliente web interceptando los eventos de hardware nativos para retornar un token exitoso simulado.
+*   **API Webhook Yape/Plin:** Para validar el cobro por QR sin depender de bancos reales, se expuso un simulador de webhook en desarrollo que permite inyectar confirmaciones de transferencias bancarias de forma controlada.
 
-| Componente / Elemento | Selector `data-testid` | Tipo | Descripción |
-|---|---|---|---|
-| **Onboarding KYC** | `input-birthdate` | Input Date | Fecha de nacimiento para validación de edad. |
-| **Onboarding KYC** | `select-document-type` | Select | Tipo de documento (DNI, CE, PTP). |
-| **Onboarding KYC** | `input-document-number` | Input Text | Número del documento de identidad. |
-| **Onboarding KYC** | `upload-mintra-pdf` | Input File | Carga del PDF de autorización del MTPE (14-17 años). |
-| **Onboarding KYC** | `btn-submit-kyc` | Button | Botón para enviar la solicitud de KYC. |
-| **Onboarding KYC** | `error-age-restriction` | Element | Contenedor del mensaje de error por edad menor a 14 años. |
-| **Onboarding KYC** | `kyc-success-alert` | Element | Mensaje de éxito al completar el onboarding KYC. |
-| **Radar Vial** | `btn-accept-service` | Button | Botón para aceptar el servicio vial (bloqueado en luz verde). |
-| **Radar Vial** | `status-in-progress` | Element | Indicador de que el servicio está en ejecución. |
-| **Billetera Fintech** | `tab-wallet` | Tab/Button | Pestaña o enlace de acceso a la billetera. |
-| **Billetera Fintech** | `locked-wallet-modal` | Element | Modal de bloqueo que exige el curso financiero aprobado. |
-| **Billetera Fintech** | `wallet-balance` | Element | Muestra el saldo disponible actualizado de forma dinámica. |
-| **Billetera Fintech** | `btn-generate-yape-qr` | Button | Generación del código QR dinámico de cobro por Yape. |
-| **Billetera Fintech** | `yape-qr-container` | Element | Contenedor de visualización del código QR para escaneo. |
-| **Billetera Fintech** | `btn-simulate-webhook-success` | Button | Simulación local de webhook de éxito bancario (entornos de desarrollo). |
-
-### 6.2 Casos de Prueba Implementados en TypeScript
-
-#### 6.2.1 Validación Legal y Onboarding KYC (`tests/onboarding.spec.ts`)
-- **Caso A (Bloqueo < 14 años):** Simula el ingreso de una fecha de nacimiento que resulta en 13 años. Valida que `btn-submit-kyc` esté deshabilitado y que `error-age-restriction` sea visible en el DOM.
-- **Caso B (Permiso MINTRA 14-17):** Simula el ingreso de una edad de 16 años. Valida la visualización del cargador `upload-mintra-pdf`. Mockea la llamada `POST **/api/v1/formalization/kyc` con status `201` y verifica el envío y mensaje de éxito `kyc-success-alert`.
-
-#### 6.2.2 Motor de Asignación y Radar Uber (`tests/radar.spec.ts`)
-- **Caso A (Bloqueo por Luz Verde):** Mockea `GET **/api/v1/services/intersections` con semáforo en `GREEN`. Valida que el botón `btn-accept-service` esté oculto o deshabilitado para prevenir accidentes en cruces viales activos.
-- **Caso B (Servicio Aceptado en Rojo):** Mockea semáforo en `RED`. Al dar clic en `btn-accept-service`, intercepta la asignación `POST **/api/v1/services/request/*/assign` y la transición `PATCH **/api/v1/services/request/*/status`, validando el cambio de estado a `status-in-progress`.
-
-#### 6.2.3 Pasarela Fintech y Bloqueo Educativo (`tests/fintech.spec.ts`)
-- **Caso A (Feature Gating):** Mockea perfil formalización con `hasCompletedFinancialCourse: false`. Verifica la renderización de `locked-wallet-modal` al interactuar con `tab-wallet`.
-- **Caso B (Pago Yape Exitoso):** Con `hasCompletedFinancialCourse: true`, simula la generación del QR `btn-generate-yape-qr` y el escaneo. Mockea el webhook entrante de Yape simulando el procesamiento de split de comisiones (5% retenido por la plataforma) e incrementa el balance en `wallet-balance` de `S/. 100.00` a `S/. 114.25` de manera dinámica (neto de S/. 14.25 agregado tras retención de S/. 0.75).
-
----
-
-## Anexo A: Guía de Instalación Local
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/[usuario]/[repo].git
-cd [repo]
-
-# 2. Configurar los MCPs del proyecto (ecosistema agéntico)
-node scripts/setup_mcps.js
-
-# 3. Backend
-cd backend && cp .env.example .env
-# Editar .env con credenciales reales
-npm install && npx prisma generate && npx prisma migrate dev
-
-# 4. Frontend (en otra terminal)
-cd frontend && cp .env.example .env
-npm install && npm run dev
-
-# 5. Subir historias a Jira (script Python)
-cd scripts && pip install requests python-dotenv
-python jira_automator.py --dry-run  # Verificar primero
-python jira_automator.py             # Crear en Jira
-```
-
-## Anexo B: Ecosistema Agéntico Utilizado
-
-| Agente | Archivo | Activación |
-|--------|---------|------------|
-| Scrum Master | `.agents/agent_scrum_master.md` | "Analiza el caso y genera el backlog" |
-| Arquitecto | `.agents/agent_architect.md` | "Genera los diagramas para el informe" |
-| Backend DBA | `.agents/agent_backend_dba.md` | "Diseña la BD y crea los endpoints" |
-| DevOps | `.agents/agent_devops.md` | "Gestiona Git y verifica el deploy" |
-
-**MCPs Instalados:** Ver [`.agents/mcp_config.json`](../.agents/mcp_config.json)
+### 6.3 Trabajo Futuro y Plan de Continuidad
+Para futuras fases de maduración del producto, se plantean las siguientes iniciativas estratégicas:
+1.  **Migración a Progressive Web App (PWA):** Habilitar Service Workers y estrategias de caché offline (`Cache-First`) para que la aplicación sea operable por trabajadores en avenidas con baja o nula conectividad de datos móviles.
+2.  **Notificaciones Push en Tiempo Real:** Integración de servidores WebSocket persistentes para alertar instantáneamente a los trabajadores sobre lavados express solicitados en sus intersecciones.
+3.  **Seguridad y Auditoría Avanzada**: Implementación de políticas de Row-Level Security (RLS) granulares a nivel de base de datos para auditorías automatizadas de modificación de registros sensibles.
 
 ---
 
